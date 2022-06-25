@@ -1,3 +1,5 @@
+require 'acts_as_list'
+
 module Newsletter
   class Engine < ::Rails::Engine
     isolate_namespace Newsletter
