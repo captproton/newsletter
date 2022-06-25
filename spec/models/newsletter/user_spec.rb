@@ -1,7 +1,10 @@
-require 'rails_helper'
+# User is for data for the other tests.
+# We do not test the User model.
 
-module Newsletter
-  RSpec.describe User, type: :model do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-end
+# require 'rails_helper'
+
+# module Newsletter
+#   RSpec.describe User, type: :model do
+#     pending "add some examples to (or delete) #{__FILE__}"
+#   end
+# end
