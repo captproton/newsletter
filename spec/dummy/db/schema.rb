@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_25_193406) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_25_224214) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,6 +34,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_193406) do
     t.index ["newsletter_designs_id"], name: "index_newsletter_areas_on_newsletter_designs_id"
   end
 
+  create_table "newsletter_assets", force: :cascade do |t|
+    t.bigint "newsletter_field_id", null: false
+    t.bigint "newsletter_piece_id", null: false
+    t.string "image"
+    t.string "content_type"
+    t.integer "size"
+    t.integer "width"
+    t.integer "parent_id"
+    t.string "thumbnail"
+    t.integer "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["newsletter_field_id"], name: "index_newsletter_assets_on_newsletter_field_id"
+    t.index ["newsletter_piece_id"], name: "index_newsletter_assets_on_newsletter_piece_id"
+  end
+
   create_table "newsletter_designs", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -54,6 +71,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_193406) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["newsletter_designs_id"], name: "index_newsletter_elements_on_newsletter_designs_id"
+  end
+
+  create_table "newsletter_fields", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "newsletter_element_id", null: false
+    t.string "label"
+    t.integer "sequence"
+    t.boolean "is_required"
+    t.string "description"
+    t.string "type"
+    t.integer "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["newsletter_element_id"], name: "index_newsletter_fields_on_newsletter_element_id"
   end
 
   create_table "newsletter_newsletters", force: :cascade do |t|
@@ -95,7 +127,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_193406) do
   add_foreign_key "newsletter_area_elements", "newsletter_areas"
   add_foreign_key "newsletter_area_elements", "newsletter_elements"
   add_foreign_key "newsletter_areas", "newsletter_designs", column: "newsletter_designs_id"
+  add_foreign_key "newsletter_assets", "newsletter_fields"
+  add_foreign_key "newsletter_assets", "newsletter_pieces"
   add_foreign_key "newsletter_elements", "newsletter_designs", column: "newsletter_designs_id"
+  add_foreign_key "newsletter_fields", "newsletter_elements"
   add_foreign_key "newsletter_newsletters", "newsletter_designs", column: "newsletter_designs_id"
   add_foreign_key "newsletter_pieces", "newsletter_areas"
   add_foreign_key "newsletter_pieces", "newsletter_elements"
