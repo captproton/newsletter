@@ -5,7 +5,6 @@ module Newsletter
     # has_and_belongs_to_many :elements, :order => 'name', :join_table => 
     #   "#{::Newsletter.table_prefix}areas_#{::Newsletter.table_prefix}elements",
     #   :class_name => 'Newsletter::Element'
-    # has_many  :pieces, :order => 'sequence', :class_name => "Newsletter::Piece"
     has_many :pieces, -> { order("sequence")}, class_name: 'Newsletter::Piece'
 
     belongs_to :updated_by, :class_name => 'User'
