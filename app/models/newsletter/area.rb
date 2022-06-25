@@ -6,6 +6,8 @@ module Newsletter
     #   "#{::Newsletter.table_prefix}areas_#{::Newsletter.table_prefix}elements",
     #   :class_name => 'Newsletter::Element'
     # has_many  :pieces, :order => 'sequence', :class_name => "Newsletter::Piece"
+    has_many :pieces, -> { order("sequence")}, class_name: 'Newsletter::Piece'
+
     belongs_to :updated_by, :class_name => 'User'
   
     # FIX_ME uncomment attr_accessor :_destroy
