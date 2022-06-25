@@ -11,7 +11,7 @@ module Newsletter
     # has_and_belongs_to_many :areas, :class_name => 'Newsletter::Area',
     #   :join_table => "#{::Newsletter.table_prefix}areas_#{::Newsletter.table_prefix}elements"
     # has_many :fields, :order => 'sequence', :class_name => 'Newsletter::Field'
-    # has_many :pieces, :class_name => 'Newsletter::Piece'
+    has_many :pieces, :class_name => 'Newsletter::Piece'
     belongs_to :design, :class_name => 'Newsletter::Design'
     belongs_to :updated_by, :class_name => 'User'
   
