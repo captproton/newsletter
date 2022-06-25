@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_25_003552) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_25_015145) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_003552) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "newsletter_elements", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.text "html_design"
+    t.bigint "newsletter_designs_id", null: false
+    t.integer "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["newsletter_designs_id"], name: "index_newsletter_elements_on_newsletter_designs_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -33,4 +45,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_25_003552) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "newsletter_elements", "newsletter_designs", column: "newsletter_designs_id"
 end

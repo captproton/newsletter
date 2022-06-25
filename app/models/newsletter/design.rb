@@ -10,7 +10,7 @@ Newsletter::Designs define a main layout, with areas to group Elements/Pieces.
 module Newsletter
   class Design < ApplicationRecord
     # has_many :areas, :order => :name, :class_name => 'Newsletter::Area'
-    # has_many :elements, :order => :name, :class_name => 'Newsletter::Element'
+    has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element'
     belongs_to :updated_by, :class_name => 'User'
     #relationships above
 
