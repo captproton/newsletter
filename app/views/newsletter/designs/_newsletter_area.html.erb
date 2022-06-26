@@ -1,0 +1,6 @@
+<% div_for area do %>
+  <% fields_for 'design[area_attributes][]', area do |naf| %>
+		<%= naf.text_field :name, :index => nil %> 
+	  <%= naff.link_to_remove "Remove", {class: 'button', style: 'margin-left: 130px;'} %>
+	<% end %>
+<% end %>

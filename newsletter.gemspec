@@ -26,6 +26,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 7.0.3"
   spec.add_dependency  "acts_as_list", "~> 1.0", ">= 1.0.4"
   spec.add_dependency  "cancancan", "~> 3.4"
+  spec.add_dependency 'will_paginate', '~> 3.3', '>= 3.3.1'
+  spec.add_dependency 'jquery-rails', '~> 4.5'
+  spec.add_dependency 'jquery-ui-rails', '~> 6.0', '>= 6.0.1'
 
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'capybara'

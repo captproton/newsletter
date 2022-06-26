@@ -1,0 +1,32 @@
+<%= title "Designs" %>
+
+<table class="list" cellpadding="1" cellspacing="0">
+  <tr class="title">
+    <td>Name</td>
+    <td>Description</td>
+  <% if::Newsletter.use_show_for_resources %>
+    <td colspan="3"> </td>
+  <% else %>
+    <td colspan="2"> </td>    
+  <% end %>
+  </tr>
+  <% for design in @designs %>
+    <tr class="<%= cycle('odd','even') %>" id="design_<%= design.id %>">
+      <td><%=h design.name %></td>
+      <td><%=h design.description %></td>
+    <% if::Newsletter.use_show_for_resources %>
+      <td><%= link_to "View", design, :class => 'button' %></td>
+    <% end %>
+      <td><%= link_to "Edit", edit_design_path(design), :class => 'button' %></td>
+      <td><%= link_to "Delete", design, :confirm => 'Are you sure?', :method => :delete, :class => 'button' %></td>
+    </tr>
+  <% end %>
+</table>
+
+
+<%= content_for :page_navigation do %>
+<div>
+  <%= will_paginate @designs %>
+  <%= link_to "New Design", new_design_path, :class => 'button' %>
+</div>
+<% end %>
