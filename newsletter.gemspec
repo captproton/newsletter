@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 7.0.3"
   spec.add_dependency  "acts_as_list", "~> 1.0", ">= 1.0.4"
+  spec.add_dependency  "cancancan", "~> 3.4"
 
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'capybara'
