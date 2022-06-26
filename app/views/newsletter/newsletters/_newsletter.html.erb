@@ -1,0 +1,22 @@
+<% unless is_email? %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title><%= @newsletter.name %></title>
+  <link rel="stylesheet" type="text/css" media="screen" href="<%= "/newsletters/#{@newsletter.id}/stylesheet.css" %>"/>
+  <%= render 'newsletter/newsletters/head' %>
+</head>
+<body>
+<% else %>
+<!DOCTYPE html>
+<style>
+  <%= @newsletter.design.stylesheet_text %>
+</style>
+<% end %>
+  <%= render :inline => File.readlines(@newsletter.design.view_path).join, :locals => @newsletter.locals %>
+<% unless is_email? %>
+</body>
+</html>
+<% end %>
