@@ -1,15 +1,57 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Newsletter</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <!-- iReach template -->
+    <title><%= h(yield(:title) || "iReach Newsletter Manager") %></title>
+    <%= stylesheet_link_tag    "newsletter/application", :media => "all" %>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/le-frog/jquery-ui.css" media="screen" rel="stylesheet" type="text/css" />
+    <%= javascript_include_tag "newsletter/application" %>
+    <%= csrf_meta_tags %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <div id="top">
+      <%= image_tag "newsletter/iReach_logo.gif", 
+          width: "269", 
+          height:"85", 
+          style: "float: left;" %>
+      <%= image_tag "newsletter/TopCenter.gif", 
+          width: "435", 
+          height: "85", 
+          style: "float: left;" %>
+      <%= image_tag "newsletter/TopRight.gif", 
+          width: "62", 
+          height: "85", 
+          style: "float: right;" %>
+      &nbsp;
+    </div>
+    <div style="background-color: #fff;">
+      <div id="menu">
+        <ul>
+          <li>
+            <span onClick="$('#setup_submenu').toggle();return false" style="cursor: pointer;">Setup</span>
 
-  <%= stylesheet_link_tag    "newsletter/application", media: "all" %>
-</head>
-<body>
+            <ul id='setup_submenu' <%= ' style="display:none"'.html_safe unless request.path =~ %r#/newsletter/designs|setup# %> >
+              <%= content_tag(:li, link_to('Newsletter Designs', news.designs_path)) if can?(:manage, Newsletter::Design) %>
+            </ul>
 
-<%= yield %>
-
-</body>
+          </li>
+          <%= content_tag(:li, link_to('Newsletters', news.newsletters_path)) if can?(:manage, Newsletter::Newsletter) %>
+        </ul>
+      </div>
+      <div id="page_content">
+            <% flash.each do |name, msg| -%>
+              <%= content_tag :div, msg, :id => "flash_#{name}" %>
+            <% end -%>
+            
+            <% if show_title? -%>
+              <h1><%=h yield(:title) %></h1>
+            <% end -%>
+            <%= yield %>
+            
+            <%= yield :page_navigation %>
+      </div>
+    </div>
+    <%= image_tag "newsletter/BottomRight.gif", width: "62", height: "85", style: "float: right;" %>
+  </body>
 </html>
