@@ -1,0 +1,32 @@
+en:
+  activerecord:
+    models:
+      newsletter/design:
+        one: "Design"
+        other: "Designs"
+      newsletter/element:
+        one: "Element"
+        other: "Elements"
+
+    attributes:
+      newsletter/design:
+        name: "Name"
+        description: "Description"
+        html_text: "HTML code"
+        stylesheet_text: "Style Sheet"
+      newsletter/element:
+        html_text: "HTML code"
+
+    errors:
+      messages:
+        record_invalid: "record is invalid"
+
+  navigation:
+
+  helpers:
+
+  messages:
+  will_paginate:
+    previous_label: "Previous"
+    next_label: "Next"
+    page_gap: "…"
