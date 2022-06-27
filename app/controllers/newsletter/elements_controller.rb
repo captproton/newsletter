@@ -1,9 +1,9 @@
 module Newsletter
   class ElementsController < ApplicationController
-    before_filter :find_element, :except => [:new,:create,:index]
-    before_filter :find_design
-    before_filter :find_fields, :except => [:new,:create,:index]
-    before_filter :find_field_types, :only => [:new,:create,:edit,:update]
+    before_action :find_element, :except => [:new,:create,:index]
+    before_action :find_design
+    before_action :find_fields, :except => [:new,:create,:index]
+    before_action :find_field_types, :only => [:new,:create,:edit,:update]
     include DeleteableActions  
 
     def index

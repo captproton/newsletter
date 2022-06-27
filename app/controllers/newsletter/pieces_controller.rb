@@ -1,8 +1,8 @@
 module Newsletter
   class PiecesController < ApplicationController
-    before_filter :find_newsletter
-    before_filter :find_element
-    before_filter :find_area
+    before_action :find_newsletter
+    before_action :find_element
+    before_action :find_area
 
     def new
       @piece = Piece.new({

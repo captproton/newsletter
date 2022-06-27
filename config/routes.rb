@@ -17,17 +17,17 @@ Newsletter::Engine.routes.draw do
   end
   resources :elements, :only => [:edit,:create,:update,:destroy]
 
-  match "/:newsletter_id/areas/:id/sort" => "areas#sort", :method => :get, as: 'sort_area'
-  match '/newsletters/:id/:mode' => 'newsletters#show', :method => :get, :as => :public_newsletter_mode
-  match '/newsletters/:id/public' => 'newsletters#show', :method => :get, :as => :public_newsletter
-  match '/newsletters/:id' => 'newsletters#show', :method => :get, :as => :newsletter
-  match '/newsletters' => 'newsletters#index', :method => :get, :as => :newsletters
+  get "/:newsletter_id/areas/:id/sort" => "areas#sort", to: 'sort_area'
+  get '/newsletters/:id/:mode' => 'newsletters#show', to: :public_newsletter_mode
+  get '/newsletters/:id/public' => 'newsletters#show', to: :public_newsletter
+  get '/newsletters/:id' => 'newsletters#show', to: :newsletter
+  get '/newsletters' => 'newsletters#index', to: :newsletters
   root :to => 'newsletters#index'
 end
 
 #public top-level routes
 Rails.application.routes.draw do
-  match '/newsletters/archive' => 'newsletter/newsletters#archive', :method => :get, :as => :newsletter_archive
-  match '/newsletters/:id/:mode' => 'newsletter/newsletters#show', :method => :get, :as => :public_newsletter_mode
-  match '/newsletters/:id/public' => 'newsletter/newsletters#show', :method => :get, :as => :public_newsletter
+  get '/newsletters/archive' => 'newsletter/newsletters#archive', to: :newsletter_archive
+  get '/newsletters/:id/:mode' => 'newsletter/newsletters#show', to: :public_newsletter_mode
+  get '/newsletters/:id/public' => 'newsletter/newsletters#show', to: :public_newsletter
 end

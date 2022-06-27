@@ -1,6 +1,8 @@
+require "deleteable"
+
 module Newsletter
   class DesignsController < ApplicationController
-    before_filter :find_design, :except => [:new, :create, :index]
+    before_action :find_design, :except => [:new, :create, :index]
 
     include DeleteableActions
 
