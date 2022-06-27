@@ -1,10 +1,10 @@
 require 'cancancan'
 module Newsletter
   class ApplicationController < ActionController::Base
-    layout Newsletter.layout
-    load_and_authorize_resource
+    # layout Newsletter.layout
+    # load_and_authorize_resource
 
-    helper :'newsletter/layout'
+    # helper :'newsletter/layout'
 
   end
 end

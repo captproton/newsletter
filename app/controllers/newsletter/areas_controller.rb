@@ -1,8 +1,8 @@
 module Newsletter 
   class AreasController < ApplicationController
     
-    before_filter :find_area, :except => [:create, :new, :index]
-    before_filter :find_design, :except => [:destroy,:sort]
+    before_action :find_area, :except => [:create, :new, :index]
+    before_action :find_design, :except => [:destroy,:sort]
   
     def sort
       @newsletter = Newsletter.find(params[:newsletter_id])
