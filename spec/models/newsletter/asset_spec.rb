@@ -7,12 +7,12 @@ module Newsletter
     #   Newsletter::AssetUploader.enable_processing = true
     # end
     # it "knows if it is an image" do
-    #   asset = FactoryGirl.create(:asset)
+    #   asset = FactoryBot.create(:asset)
     #   # default factory assumes image
     #   expect(asset.is_image?).to be true
     # end
     # it "knows if it is not an image" do
-    #   asset = FactoryGirl.create(:asset,
+    #   asset = FactoryBot.create(:asset,
     #     image: File.open(File.join(Rails.root, 
     #     '/spec/support/files/test.pdf'))
     #   )

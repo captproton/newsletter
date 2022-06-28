@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :user do
-    first_name { "MyFirstName" }
-    last_name { "MyLastName" }
-    email { "MyString@mystring.com" }
-    phone { "555-555-1212" }
+      first_name {FFaker::Name.first_name}
+      last_name {FFaker::Name.last_name}
+      email {FFaker::Internet.email}
+      phone {FFaker::PhoneNumber.phone_number}
   end
 end

@@ -5,10 +5,18 @@ module Newsletter
     # pending "add some examples to (or delete) #{__FILE__}"
     before(:each) do 
       FileUtils.rm_rf(File.join(Rails.root, 'public', 'images', 'My_Design'))
-      @design = import_design(nil,"My Design")
+      gem_root = File.expand_path(File.join(File.dirname(__FILE__),'..','..'))
+
+      company_name ||= FFaker::Company.name
+
+      file ||= File.join(gem_root,'..','designs','exports','example-export.yaml')
+      @design = Design.import(file,company_name)
+      # @design.update_attribute(:stylesheet_text, ".blah{background-color: red}")
+      @design
+
     end
 
-    pending  it "sets the name correctly" do
+    it "sets the name correctly" do
       expect(@design.name).to eq("My Design")
     end
 
