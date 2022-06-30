@@ -1,6 +1,9 @@
 module Newsletter
   class NewslettersController < ApplicationController
-    before_action :_set_current_user
+    # before_action :_set_current_user
+    # FIX_ME: before_action :authenticate! should be here instead
+    before_action :authenticate_user!
+    
     helper_method :newsletter
     def sort
       Newsletter.all.each do | newsletter |
@@ -90,10 +93,6 @@ module Newsletter
     end
 
     private
-    def _set_current_user
-      current_user = User.create_or_find_by(first_name: "Carl", last_name: "admin")
-
-    end
     
   end
 end

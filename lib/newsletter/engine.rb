@@ -37,7 +37,7 @@ module Newsletter
 
   def self.authorized?(user, object=nil)
     if object.eql?(::Newsletter::Design)
-      return true unless ::Newsletter.designs_require_authentication 
+      # return true unless ::Newsletter.designs_require_authentication 
       return false if user.blank?
       return true unless ::Newsletter.design_authorized_roles.present? 
       authorized_for_roles?(user, ::Newsletter.design_authorized_roles)
