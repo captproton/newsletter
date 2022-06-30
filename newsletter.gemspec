@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'capybara'
   spec.add_development_dependency 'factory_bot_rails'
   spec.add_development_dependency 'ffaker'
+  spec.add_development_dependency 'devise', '~> 4.8', '>= 4.8.1'
 
 
   spec.add_development_dependency 'guard-rspec'

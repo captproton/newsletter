@@ -10,6 +10,14 @@
   </head>
 
   <body>
+    <p class="notice"><%= notice %> </p>
+    <p class="alert"><%= alert %> </p>
+    <% if user_signed_in? %>
+      <%= link_to  "Newsletter", 
+      "/newsletter" %>
+    <% else %>  
+      <%= link_to  "Sign In", "users/sign_in" %>
+    <% end %>
     <%= yield %>
   </body>
 </html>
