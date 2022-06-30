@@ -1,5 +1,6 @@
 module Newsletter
   class NewslettersController < ApplicationController
+    before_action :_set_current_user
     helper_method :newsletter
     def sort
       Newsletter.all.each do | newsletter |
@@ -37,7 +38,7 @@ module Newsletter
     end
   
     def index
-      @newsletters = ::Newsletter::Newsletter.active.order('created_at desc, published_at desc').paginate(:page => params[:page])
+      @newsletters = ::Newsletter::Newsletter.active#.order('created_at desc, published_at desc').paginate(:page => params[:page])
     end
   
     def show
@@ -88,5 +89,11 @@ module Newsletter
       redirect_to(newsletters_url)
     end
 
+    private
+    def _set_current_user
+      current_user = User.create_or_find_by(first_name: "Carl", last_name: "admin")
+
+    end
+    
   end
 end

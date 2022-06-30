@@ -19,8 +19,10 @@ module Newsletter
     # FIX_ME uncomment scopes
     # scope :published, {:conditions => "#{::Newsletter.table_prefix}newsletters.published_at is not null", 
     #   :order => "#{::Newsletter.table_prefix}newsletters.created_at desc"}
+    scope :published, -> {where("published_at is not null").order('created_at desc')}
     # scope :active, {:conditions => "#{::Newsletter.table_prefix}newsletters.deleted_at is null", 
     #   :order => "#{::Newsletter.table_prefix}newsletters.created_at desc"}
+    scope :active, -> { where("deleted_at is null").order('created_at desc') }
   
     validates_presence_of :name
   

@@ -1,7 +1,8 @@
 <%= title "Newsletters" %>
 <div>
   <%= link_to "New Newsletter", new_newsletter_path, :class => 'button' %>
-<div><br /><br /><%= will_paginate @newsletters %></div>
+  <%# FIX_ME uncomment will_paginate %>
+<div><br /><br /><%#= will_paginate @newsletters %></div>
 <table class="list" cellpadding="1" cellspacing="0">
   <tr class="title">
     <td>Name</td>
@@ -25,5 +26,6 @@
 <div>
   <%= link_to "New Newsletter", new_newsletter_path, :class => 'button' %>
 </div>
-<div><br /><br /><%= will_paginate @newsletters %></div>
+  <%# FIX_ME uncomment will_paginate %>
+<div><br /><br /><%#= will_paginate @newsletters %></div>
 <% end %>

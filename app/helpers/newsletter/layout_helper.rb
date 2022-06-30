@@ -4,7 +4,8 @@ module Newsletter
       if value.nil?
         @page_title
       else
-        @page_title = translate( value, locals)
+        @page_title = "title for section"
+        # @page_title = translate( value, locals)
         "<h1>#{@page_title}</h1>".html_safe
       end
     end
@@ -34,10 +35,11 @@ module Newsletter
       # :nocov:
     end
 
-    def translate(key, options={})
-      super(key, options.merge(raise: true))
-    rescue I18n::MissingTranslationData
-      key
-    end
+    # FIX_ME uncomment def translate
+    # def translate(key, options={})
+    #   super(key, options.merge(raise: true))
+    # rescue I18n::MissingTranslationData
+    #   key
+    # end
   end
 end

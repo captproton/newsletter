@@ -19,4 +19,70 @@ module Newsletter
     end
 
   end
+
+
+  def self.authorized_for_roles?(user,roles=[])
+    user_roles = if ::Newsletter.roles_method.present?
+      user.send(::Newsletter.roles_method)
+    elsif user.respond_to?(:roles)
+      user.roles
+    elsif user.respond_to?(:role)
+      [user.role]
+    else
+      []
+    end
+    user_roles = [user_roles] unless user_roles.is_a?(Array)
+    roles.detect{|role| user_roles.map(&:to_sym).map(&:to_s).include?(role.to_s)}.present?
+  end
+
+  def self.authorized?(user, object=nil)
+    if object.eql?(::Newsletter::Design)
+      return true unless ::Newsletter.designs_require_authentication 
+      return false if user.blank?
+      return true unless ::Newsletter.design_authorized_roles.present? 
+      authorized_for_roles?(user, ::Newsletter.design_authorized_roles)
+    elsif object.eql?(::Newsletter::Newsletter)
+      return true unless ::Newsletter.newsletters_require_authentication 
+      return false if user.blank?
+      return true unless ::Newsletter.newsletter_authorized_roles.present? 
+      authorized_for_roles?(user, ::Newsletter.newsletter_authorized_roles)
+    else
+      false
+    end
+  end
+  
+  def self.abilities
+    <<-EOT
+      if ::Newsletter.authorized?(user, ::Newsletter::Design)
+        can :manage, [
+          ::Newsletter::Design,
+          ::Newsletter::Element,
+          ::Newsletter::Area,
+          ::Newsletter::Field
+        ]
+      end
+      if ::Newsletter.authorized?(user, ::Newsletter::Newsletter)
+        can :manage, [
+          ::Newsletter::Newsletter,
+          ::Newsletter::Piece,
+          ::Newsletter::FieldValue
+        ]
+        can :read, [
+          ::Newsletter::Design,
+          ::Newsletter::Element,
+          ::Newsletter::Area,
+          ::Newsletter::Field
+        ]
+        can [:sort,:publish,:unpublish], ::Newsletter::Newsletter
+        can :sort, ::Newsletter::Area
+      end
+      can :read, [
+        ::Newsletter::Newsletter,
+        ::Newsletter::Piece,
+        ::Newsletter::FieldValue
+      ]
+      can :archive, ::Newsletter::Newsletter
+    EOT
+  end
+
 end
