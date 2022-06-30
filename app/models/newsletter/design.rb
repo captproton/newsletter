@@ -10,7 +10,7 @@ Newsletter::Designs define a main layout, with areas to group Elements/Pieces.
 module Newsletter
   class Design < ApplicationRecord
     has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element'
-    belongs_to :updated_by, :class_name => 'User'
+    belongs_to :author, required: true, class_name: "User"
     #relationships above
 
     # FIX_ME turn the active scope back on
@@ -26,7 +26,7 @@ module Newsletter
 
     # Export a design's data to a YAML file. 
     def export(filename=nil)
-      filename = "#{::Newsletter.designs_path}/exports/#{name_as_path}-export.yaml" unless filename
+      filename = "#{Rails.application.config_for(:newsletter).designs_path}/exports/#{name_as_path}-export.yaml" unless filename
       FileUtils.mkdir_p(File.dirname(filename))
       File.open(filename,'w') do |file|
         YAML.dump( {
@@ -45,24 +45,39 @@ module Newsletter
     # Parameters:
     #   filename - path/name of file on filesystem
     #   design_name => rename design if already taken
-    def self.import(filename,design_name=nil)
+    def self.import(filename,design_name=nil, current_user)
       raise "You must give a filename to import!" unless filename
       data = YAML.load_file(filename)
       design = nil
       transaction do 
+        # begin transaction
+        # set design_name from given input
         data[:name] = design_name if design_name
+        # create a design with that name
+        # use data for model values
         design = Design.create(:name => data[:name], 
-          :html_text => data[:html_text],
-          :description => data[:description],
-          :stylesheet_text => data[:stylesheet_text])
-        data[:areas].each do |area_data|
-          Area.import(design,area_data)
-        end
-        data[:elements].each do |element_data|
-          Element.import(design,element_data)
-        end
-        design.import_images(data[:images])
+          html_text:          data[:html_text],
+          description:        data[:description],
+          stylesheet_text:    data[:stylesheet_text],
+          author:         current_user)
+        # create child areas, based on data provided
+        # data[:areas].each do |area_data|
+        # Area.create!(name: data[:name], 
+        #                 description: data[:description],
+        #                 design: design
+        #                 )
+        # end
+
+        # create child elements, based on data provided
+        # data[:elements].each do |element_data|
+        #   Element.import(design,element_data)
+        # end
+
+        # import images, based on data provided
+        # design.import_images(data[:images])
+        # end of transaction
       end
+
       raise "Error importing design: #{design.errors.full_messages.join("\n  ")}" unless design.valid?
       design
     end
@@ -76,7 +91,8 @@ module Newsletter
     # returns the path to the base of the design's files
     def base_design_path(this_name=nil)
       this_name ||= name
-      File.join(::Newsletter.designs_path,'designs',name_as_path(this_name))
+      ndp = 
+      File.join(::Newsletter::Design.designs_path,'designs',name_as_path(this_name))
     end
 
     # returns the image filenames inside a design
@@ -150,6 +166,10 @@ module Newsletter
     # FIX_ME turn Deletable back on
     # include Deleteable
 
+    def self.designs_path
+      Rails.application.config_for(:newsletter).designs_path
+    end
+        
     protected
     def read_design
       File.readlines(view_path).join

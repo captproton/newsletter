@@ -40,9 +40,10 @@ module Newsletter
 
     # builds areas from data pulled out of an exported YAML file by Newsletter::Design.import(class)
     def self.import(design,data)
-      area = Area.create(:name => data[:name], :description => data[:description])
-      area.design = design
-      area.save
+      area = self.create!(name: data[:name], 
+                        description: data[:description],
+                        design: design
+                        )
     end
   end
 end
