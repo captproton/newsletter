@@ -10,11 +10,12 @@ Newsletter::Designs define a main layout, with areas to group Elements/Pieces.
 module Newsletter
   class Design < ApplicationRecord
     has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element'
-    belongs_to :author, required: true, class_name: "User"
+    belongs_to :updated_by, required: true, class_name: "User"
     #relationships above
 
     # FIX_ME turn the active scope back on
     # scope :active, :conditions => {:deleted_at => nil}
+    scope :active, -> { where("deleted_at is null") }
     # scopes above
 
     validates :name, presence: true, uniqueness: true
