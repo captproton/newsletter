@@ -13,8 +13,6 @@ module Newsletter
     belongs_to :updated_by, required: true, class_name: "User"
     #relationships above
 
-    # FIX_ME turn the active scope back on
-    # scope :active, :conditions => {:deleted_at => nil}
     scope :active, -> { where("deleted_at is null") }
     # scopes above
 
