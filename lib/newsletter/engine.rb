@@ -39,10 +39,10 @@ module Newsletter
     if object.eql?(::Newsletter::Design)
       # return true unless ::Newsletter.designs_require_authentication 
       return false if user.blank?
-      return true unless ::Newsletter.design_authorized_roles.present? 
-      authorized_for_roles?(user, ::Newsletter.design_authorized_roles)
+      return true unless self.settings.design_authorized_roles.present? 
+      authorized_for_roles?(user, self.settings.design_authorized_roles)
     elsif object.eql?(::Newsletter::Newsletter)
-      return true unless ::Newsletter.newsletters_require_authentication 
+      return true unless self.settings.newsletters_require_authentication 
       return false if user.blank?
       return true unless ::Newsletter.newsletter_authorized_roles.present? 
       authorized_for_roles?(user, ::Newsletter.newsletter_authorized_roles)
@@ -84,5 +84,10 @@ module Newsletter
       can :archive, ::Newsletter::Newsletter
     EOT
   end
+
+  def self.settings
+    Rails.application.config_for(:newsletter)
+  end
+  
 
 end
