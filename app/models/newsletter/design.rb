@@ -9,14 +9,15 @@ Newsletter::Designs define a main layout, with areas to group Elements/Pieces.
 
 module Newsletter
   class Design < ApplicationRecord
-    has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element'
+    # has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element', foreign_key: :newsletter_element_id
+    has_many :newsletters, foreign_key: :newsletter_design_id
     belongs_to :updated_by, required: true, class_name: "User"
     #relationships above
 
     scope :active, -> { where("deleted_at is null") }
     # scopes above
 
-    validates :name, presence: true, uniqueness: true
+    # validates :name, presence: true, uniqueness: true
     # validations above
 
     # attr_protected :id
@@ -149,13 +150,13 @@ module Newsletter
       self[:name] = new_name
     end
   
-    def save(*args)
-      transaction do 
-        move_design_on_name_change
-        write_design
-        super
-      end
-    end  
+    # def save(*args)
+    #   transaction do 
+    #     move_design_on_name_change
+    #     write_design
+    #     super
+    #   end
+    # end  
   
     # returns a version of name that is nice for filesytem use
     def name_as_path(this_name=nil)

@@ -1,9 +1,11 @@
 <%= form_for(@newsletter) do |f| %>
-  <%= f.error_messages %>
+  <%#= f.error_messages %>
 
   <% if @newsletter.design.nil? %>
-    <%= f.label :design %>
-    <%= f.select :design_id, @designs.collect {|design| [ design.name, design.id ] } %><br />
+    <%= f.label :newsletter_design %>
+    <%= f.select :newsletter_design_id, @designs.collect {|design| [ design.name, design.id ] } %>
+    
+    <br />
   <% end %>
     <%= f.label :name %>
     <%= f.text_field :name, :style=> 'float: left; margin-right: 10px;', :size => '50' %>

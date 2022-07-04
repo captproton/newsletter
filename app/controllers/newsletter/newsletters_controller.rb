@@ -67,13 +67,27 @@ module Newsletter
     end
 
     def create
-      @newsletter = Newsletter.new(params[:newsletter])
+      @newsletter               = Newsletter.new(name: params[:newsletter][:name])
+      @newsletter.description   = params[:newsletter][:description]
+      # @newletter.design         = Design.find(2)  
+
+      puts "================================================================"
+      puts "newsletter: #{@newsletter}"
+      puts "name:       #{@newsletter.name}"
+
       if @newsletter.save
         flash[:notice] = 'Newsletter was successfully created.'
+        puts "  "
+        puts "Newsletter was successfully created."
+        puts "================================================================"
+
         redirect_to(edit_newsletter_path(@newsletter))
       else
         @designs = Design.active
         render :action => "new"
+        puts "  "
+        puts "Newsletter was successfully created."
+        puts "================================================================"
       end
     end
 
@@ -93,6 +107,15 @@ module Newsletter
     end
 
     private
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def newsletter_params
+      # strong_params = params.require(:newsletter).permit(:name, :description)
+      # strong_params
+      params
+        .require(:newsletter)
+        .permit(:name,:description, :newsletter_design_id, :design, :design_id, :newsletter_design)
+    end
     
   end
 end
