@@ -70,5 +70,12 @@ module Newsletter
     def find_field_types
       @field_types ||= Field.valid_types
     end
+
+    private
+
+    def element_params
+      params.require(:element).permit(:name, :description, :html_design, :deleted_at)
+    end
+    
   end
 end

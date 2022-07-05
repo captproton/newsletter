@@ -23,7 +23,6 @@ module Newsletter
     # FIX_ME: replace nested_attributes with something that goes with Rails 7
     # accepts_nested_attributes_for :fields, allow_destroy: true
 
-    attr_protected :id
     #FIXME: make this work with deletable or convert to auditable, and extend it to access destroyed records
     #validates_uniqueness_of :name, :scope => :design_id
   
