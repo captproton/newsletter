@@ -26,7 +26,7 @@ module Newsletter
 
     # Export a design's data to a YAML file. 
     def export(filename=nil)
-      filename = "#{Rails.application.config_for(:newsletter).designs_path}/exports/#{name_as_path}-export.yaml" unless filename
+      filename = "#{Newsletter.settings.designs_path}/exports/#{name_as_path}-export.yaml" unless filename
       FileUtils.mkdir_p(File.dirname(filename))
       File.open(filename,'w') do |file|
         YAML.dump( {

@@ -26,7 +26,7 @@
      <% unless @design.name.blank? %>
           <label>Design Filename</label>
           <div style="padding-top: 9px;">
-               <%= @design.view_path.gsub(/^#{Rails.application.config_for(:newsletter).designs_path}}/,'') %>
+               <%= @design.view_path.gsub(/^#{Newsletter.settings.designs_path}}/,'') %>
           </div>
           <br />
      <% end %>
@@ -37,6 +37,7 @@
     <%= form.text_area :stylesheet_text %>
   </div>
 
+<%# FIX_ME: html_text not saving to DB %>
   <div>
     <%= form.label :html_text, style: "display: block" %>
     <%= form.text_area :html_text %>
