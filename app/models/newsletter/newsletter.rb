@@ -11,10 +11,10 @@ Newsletter also registers itself to be Mailable through the List Manager of Mail
 module Newsletter
   class Newsletter < ApplicationRecord
     Rails.logger.info "Loading Newsletter Object"
-    table_prefix = "newsletter_"
-    self.table_name =  "#{table_prefix}newsletters"
-    belongs_to :design, :class_name => 'Newsletter::Design'
-    has_many :pieces, -> { order("sequence").where "#{table_prefix}pieces.deleted_at is null" }, class_name: 'Newsletter::Piece'
+    belongs_to :design, class_name: 'Newsletter::Design', foreign_key: 'design_id', required: true
+
+    belongs_to :updated_by, class_name: "User", required: true
+    # has_many :pieces, -> { order("sequence").where "#{table_prefix}pieces.deleted_at is null" }, class_name: 'Newsletter::Piece'
   
     # FIX_ME uncomment scopes
     # scope :published, {:conditions => "#{::Newsletter.table_prefix}newsletters.published_at is not null", 

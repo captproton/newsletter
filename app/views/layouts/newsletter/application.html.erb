@@ -32,14 +32,29 @@
             <span onClick="$('#setup_submenu').toggle();return false" style="cursor: pointer;">Setup</span>
 
             <ul id='setup_submenu' <%= ' style="display:none"'.html_safe unless request.path =~ %r#/newsletter/designs|setup# %> >
-              <%= content_tag(:li, link_to('Newsletter Designs', news.designs_path)) if can?(:manage, Newsletter::Design) %>
+              <%= content_tag(:li, link_to('Newsletter Designs', Newsletter.settings.designs_path)) if can?(:manage, Newsletter::Design) %>
             </ul>
 
           </li>
-          <%= content_tag(:li, link_to('Newsletters', news.newsletters_path)) if can?(:manage, Newsletter::Newsletter) %>
+          <%= content_tag(:li, link_to('Newsletters',  Newsletter.settings.newsletters_path)) if can?(:manage, Newsletter::Newsletter) %>
         </ul>
       </div>
       <div id="page_content">
+            <div id="flash_notice">
+              lookie
+            </div>
+            <div id="flash_alert">
+              Alert!
+            </div>
+            <% flash.each do |msg_type, message| %>
+              <div class="alert alert-primary alert-<%= msg_type %>"" role="alert">
+                <div class="container">
+                  <button class="close" data-dismiss="alert"><span>×</span></button>
+                  <%= message %>
+                </div>
+              </div>
+            <% end %>
+
             <% flash.each do |name, msg| -%>
               <%= content_tag :div, msg, :id => "flash_#{name}" %>
             <% end -%>

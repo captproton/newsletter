@@ -3,3 +3,4 @@
 //= link newsletter/iReach_logo.gif
 //= link newsletter/TopCenter.gif
 //= link newsletter/TopRight.gif
+//= link newsletter/BottomRight.gif

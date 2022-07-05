@@ -24,6 +24,8 @@ module Newsletter
 
     def create
       @design = Design.new(params[:design])
+      @design.updated_by = current_user
+
       if @design.save
         flash[:notice] = 'Design was successfully created.'
         redirect_to(edit_design_path(@design))
@@ -51,5 +53,10 @@ module Newsletter
     def find_design
       @design = Design.find(params[:id])
     end
+
+    def design_params
+      params.require(:design).permit(:name,:description, newsletters_attributes: [:design_id, :name, :description])
+    end
+
   end
 end
