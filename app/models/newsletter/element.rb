@@ -18,7 +18,7 @@ module Newsletter
 
     # has_many :fields, :order => 'sequence', :class_name => 'Newsletter::Field'
     has_many :pieces, :class_name => 'Newsletter::Piece'
-    belongs_to :design, :class_name => 'Newsletter::Design'
+    belongs_to :design, class_name: 'Newsletter::Design', foreign_key: 'design_id', required: true
     belongs_to :updated_by, :class_name => 'User'
   
     # FIX_ME uncomment scope
