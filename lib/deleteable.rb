@@ -3,7 +3,7 @@ module Deleteable
   def self.included(receiver)
     receiver.extend ClassMethods
     receiver.class_eval do
-      default_scope where("deleted_at IS NULL")
+      default_scope { where("deleted_at IS NULL") }
     end
   end
 

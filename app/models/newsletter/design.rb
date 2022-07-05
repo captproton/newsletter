@@ -6,10 +6,23 @@ Newsletter::Designs define a main layout, with areas to group Elements/Pieces.
 
 
 =end
+# FIX_ME uncomment deleteable
+# This was commented out when this error was caused at http://localhost:3000/newsletter/designs/3/elements
+# ArgumentError (Support for calling #default_scope without a block is removed. For example instead of `default_scope where(color: 'red')`, please use `default_scope { where(color: 'red') }`. (Alternatively you can just redefine self.default_scope.)):
+
+# (eval):1:in `initialize'
+# Started GET "/newsletter/designs/3/elements" for ::1 at 2022-07-05 12:34:44 -0700
+# Processing by Newsletter::ElementsController#index as HTML
+#   Parameters: {"design_id"=>"3"}
+#   User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["id", 1], ["LIMIT", 1]]
+# Completed 500 Internal Server Error in 28ms (ActiveRecord: 4.5ms | Allocations: 7804)
+
+
+# require "deleteable"
 
 module Newsletter
   class Design < ApplicationRecord
-    # has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element', foreign_key: :newsletter_element_id
+    has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element'
     has_many :newsletters, foreign_key: :newsletter_design_id
     belongs_to :updated_by, required: true, class_name: "User"
     #relationships above

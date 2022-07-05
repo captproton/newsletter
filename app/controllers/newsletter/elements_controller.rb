@@ -1,14 +1,13 @@
 module Newsletter
-  class ElementsController < ApplicationController
+  class ElementsController < ::Newsletter::ApplicationController
     before_action :find_element, :except => [:new,:create,:index]
     before_action :find_design
     before_action :find_fields, :except => [:new,:create,:index]
     before_action :find_field_types, :only => [:new,:create,:edit,:update]
-    include DeleteableActions  
+    # include DeleteableActions  
 
     def index
-      @elements = @design.elements.
-        by_design(@design).paginate(:page => params[:page])
+      @elements = @design.elements#.by_design(@design).paginate(:page => params[:page])
     end
 
     def new
