@@ -22,24 +22,24 @@ module Newsletter
     def edit
     end
 
+    # POST /designs
     def create
-      @design = Design.new(params[:design])
+      @design = Design.new(design_params)
       @design.updated_by = current_user
 
       if @design.save
-        flash[:notice] = 'Design was successfully created.'
-        redirect_to(edit_design_path(@design))
+        redirect_to edit_design_path(@design), notice: "Design was successfully created."
       else
-          render :action => "new"
+        render :new, status: :unprocessable_entity
       end
     end
 
+    # PATCH/PUT /designs/1
     def update
-      if @design.update_attributes(params[:design])
-        flash[:notice] = 'Design was successfully updated.'
-        redirect_to(edit_design_path(@design))
+      if @design.update(design_params)
+        redirect_to edit_design_path(@design), notice: "Design was successfully updated."
       else
-        render :action => "edit"
+        render :edit, status: :unprocessable_entity
       end
     end
 
@@ -55,7 +55,7 @@ module Newsletter
     end
 
     def design_params
-      params.require(:design).permit(:name,:description, newsletters_attributes: [:design_id, :name, :description])
+      params.require(:design).permit(:name,:description, :stylesheet_text, :html_text, newsletters_attributes: [:design_id, :name, :description])
     end
 
   end
