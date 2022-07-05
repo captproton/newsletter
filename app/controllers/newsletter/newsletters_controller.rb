@@ -3,7 +3,8 @@ module Newsletter
     # before_action :_set_current_user
     # FIX_ME: before_action :authenticate! should be here instead
     before_action :authenticate_user!
-    
+    before_action :set_newsletter, only: %i[ show edit update destroy ]
+
     helper_method :newsletter
     def sort
       Newsletter.all.each do | newsletter |
@@ -58,8 +59,8 @@ module Newsletter
     end
 
     def new
-      @newsleter = Newsletter.new
-      @designs = Design.active
+      @newsleter  = Newsletter.new
+      @designs    = Design.active
     end
 
     def edit
@@ -67,28 +68,16 @@ module Newsletter
     end
 
     def create
-      @newsletter               = Newsletter.new(name: params[:newsletter][:name])
-      @newsletter.description   = params[:newsletter][:description]
-      # @newletter.design         = Design.find(2)  
-
-      puts "================================================================"
-      puts "newsletter: #{@newsletter}"
-      puts "name:       #{@newsletter.name}"
+      @newsletter = Newsletter.new(newsletter_params)
+      best_user =User.last
+      @newsletter.updated_by    = best_user
 
       if @newsletter.save
-        flash[:notice] = 'Newsletter was successfully created.'
-        puts "  "
-        puts "Newsletter was successfully created."
-        puts "================================================================"
-
-        redirect_to(edit_newsletter_path(@newsletter))
+        redirect_to @newsletter, notice: "Movie was successfully created."
       else
-        @designs = Design.active
-        render :action => "new"
-        puts "  "
-        puts "Newsletter was successfully created."
-        puts "================================================================"
+        render :new, status: :unprocessable_entity
       end
+
     end
 
     def update
@@ -107,14 +96,16 @@ module Newsletter
     end
 
     private
+      # Use callbacks to share common setup or constraints between actions.
+      def set_newsletter
+        @newsletter = Newsletter.find(params[:id])
+      end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def newsletter_params
       # strong_params = params.require(:newsletter).permit(:name, :description)
       # strong_params
-      params
-        .require(:newsletter)
-        .permit(:name,:description, :newsletter_design_id, :design, :design_id, :newsletter_design)
+      params.require(:newsletter).permit(:name, :description, :design_id)
     end
     
   end

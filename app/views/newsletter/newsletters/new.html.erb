@@ -1,6 +1,7 @@
 <%= title "New Newsletter" %>
 
-<%= render :partial => 'form' %>
+<%#= render :partial => 'form' %>
+<%= render "form", newsletter: @newsletter %>
 
 <%= content_for :page_navigation do %>
 <div>

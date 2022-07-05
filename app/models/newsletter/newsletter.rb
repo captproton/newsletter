@@ -11,9 +11,9 @@ Newsletter also registers itself to be Mailable through the List Manager of Mail
 module Newsletter
   class Newsletter < ApplicationRecord
     Rails.logger.info "Loading Newsletter Object"
-    belongs_to :design, optional: true, foreign_key: :newsletter_design_id#, class_name: "Newsletter::Design"
-    # belongs_to :newsletter_design, optional: true, class_name: "Newsletter::Design"
-    belongs_to :updated_by, class_name: "User", required: true, foreign_key: :updated_by
+    belongs_to :design, class_name: 'Newsletter::Design', foreign_key: 'design_id', required: true
+
+    belongs_to :updated_by, class_name: "User", required: true
     # has_many :pieces, -> { order("sequence").where "#{table_prefix}pieces.deleted_at is null" }, class_name: 'Newsletter::Piece'
   
     # FIX_ME uncomment scopes
