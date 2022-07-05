@@ -73,7 +73,7 @@ module Newsletter
       @newsletter.updated_by    = best_user
 
       if @newsletter.save
-        redirect_to @newsletter, notice: "Movie was successfully created."
+        redirect_to @newsletter, notice: "Newsletter was successfully created."
       else
         render :new, status: :unprocessable_entity
       end

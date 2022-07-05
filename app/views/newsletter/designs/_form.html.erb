@@ -1,32 +1,59 @@
 <%# FIX_ME nested_form_for is pre rails 4 %>
-<%= form_for @design do |f| %>
-  <%#= f.error_messages %>
-     <%= f.label :name %>
-     <%= f.text_field :name %><br />
-     <%= f.label :description %>
-     <%= f.text_field :description %><br />
+<%= form_with(model: design) do |form| %>
+  <% if design.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(design.errors.count, "error") %> prohibited this design from being saved:</h2>
+
+      <ul>
+        <% design.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
      <% unless @design.name.blank? %>
           <label>Design Filename</label>
           <div style="padding-top: 9px;">
-               <%= @design.view_path.gsub(/^#{::Newsletter.designs_path}/,'') %>
+               <%= @design.view_path.gsub(/^#{Newsletter.settings.designs_path}}/,'') %>
           </div>
           <br />
      <% end %>
+  </div>
 
-     <%= f.label :stylesheet_text %>
-     <%= f.text_area :stylesheet_text %><br />
-     <%= f.label :html_text %>
-     <%= f.text_area :html_text %><br />
+  <div>
+    <%= form.label :stylesheet_text, style: "display: block" %>
+    <%= form.text_area :stylesheet_text %>
+  </div>
 
-     <div class='newsletter_parts_group'>
-          <h2 style='padding-bottom: 0; margin-bottom: 0; font-size: 10pt; '>Areas</h2>
-          The HTML code field above should contain &lt;%= render [your_area_name] %&gt; for each area you create.<br/>
-          <%# <div id="areas"> %>
-               <%#= f.fields_for :areas %>
-          <%# </div> %>
-          <%#= f.link_to_add('Add Area', :areas, {class: 'button'}) %>
-     </div>
+<%# FIX_ME: html_text not saving to DB %>
+  <div>
+    <%= form.label :html_text, style: "display: block" %>
+    <%= form.text_area :html_text %>
+  </div>
 
-     <div class="submit_button"><%= f.submit "Submit", :class => 'button' %></div>
-    
+  <div class='newsletter_parts_group'>
+    <h2 style='padding-bottom: 0; margin-bottom: 0; font-size: 10pt; '>Areas</h2>
+     The HTML code field above should contain &lt;%= render [your_area_name] %&gt; for each area you create.<br/>
+     <%# ** this is a nested form that needs dynamic adding like to-do list with tasks %>
+     <%# <div id="areas"> %>
+          <%#= f.fields_for :areas %>
+     <%# </div> %>
+     <%#= f.link_to_add('Add Area', :areas, {class: 'button'}) %>
+  </div>
+
+  <div>
+     <div class="submit_button"><%= form.submit "Submit", :class => 'button' %></div>
+  </div>
 <% end %>

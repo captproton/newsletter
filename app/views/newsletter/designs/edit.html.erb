@@ -1,6 +1,9 @@
+
 <%= title "Edit Design" %>
 
-<%= render :partial => 'form' %>
+<%= render "form", design: @design %>
+
+<br>
 
 <%= content_for :page_navigation do %>
   <div>
