@@ -16,10 +16,10 @@ module Newsletter
       # FIX_ME: table_name should be rehabbed
       self.table_name =  "newsletter_fields"
       belongs_to :element, :class_name => 'Newsletter::Element'
-      has_many :field_values, :class_name => 'Newsletter::FieldValue'
-      belongs_to :updated_by, :class_name => 'User'
+      # has_many :field_values, :class_name => 'New sletter::FieldValue'
+      # belongs_to :updated_by, :class_name => 'User'
 
-      attr_accessor :_destroy
+      # attr_accessor :_destroy
 
       acts_as_list :scope => :element, :column => :sequence
 

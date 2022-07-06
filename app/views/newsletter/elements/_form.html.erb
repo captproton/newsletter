@@ -1,56 +1,24 @@
 <%# FIX_ME nested_form_for is before rails 4 %>
-<%= form_with(model: element) do |form| %>
-  <%= f.error_messages %>
-       <%= f.label :name %>
-       <%= f.text_field :name %><br />
-       <%= f.label :description %>
-       <%= f.text_field :description %><br />
-    <% unless element.name.blank? %>
-    	<label>Element Filename</label>
-    	     <div style="padding-top: 7px";><%= element.file_path.gsub(/^#{::Newsletter.designs_path}/,'') %></div><br />
-  	<% end %>
-       <%= f.label :html_text %>
-       <%= f.text_area :html_text %><br />
-        <div class='newsletter_parts_group' style='margin-top: 10px; padding: 0 5px 5px 15px; border: thin dashed black; background-color: #eee'>
-           <h2 style='font-size: 10pt; '>Fields</h2>
-           The HTML code field above should contain (at the least):
-            <ul>
-              <li>&lt;%= [field_name] %&gt; for each Text field.</li>
-              <li>&lt;%= filter([field_name]) %&gt; for each Textarea.</li>
-              <li>&lt;%= image_tag([field_name]) %&gt; for each Inlineasset that will contain an image.</li>
-              <li>&lt;%= link_to([field_name]) %&gt; for each Inlineasset that will contain a link.</li>
-            </ul>
-        		<div id="newsletter_fields">
-        			<%= f.fields_for :fields %>
-        		  <%= f.link_to_add('Add Field', :fields, {class: 'button add_field'}) %>
-        		</div>
-<%= content_for :head do %>
-<script>
-jQuery(document).ready(function() {
-  jQuery("#newsletter_fields").sortable({
-    axis: 'y',
-    stop: function (event, ui) {
-      var sequence = 1;
-      jQuery('#newsletter_fields .fields input.sequence').each(function(){
-          jQuery(this).val(sequence);
-          sequence += 1;
-      });
-    } 
-  });
-  jQuery('.add_field').click(function() {
-    jQuery( "#newsletter_fields" ).sortable( "refresh" );
-  });
-});
-</script>
-<% end %>
-      	</div>
-      	<div class='newsletter_parts_group' style='margin-top: 10px; padding: 0 5px 5px 15px; border: thin dashed black; background-color: #eee'>
-           <h2 style='padding-bottom: 0; margin-bottom: 0; font-size: 10pt; '>Areas</h2>
-        	<% @design.areas.each do |area| %>
-        	 <%= check_box_tag "element[area_ids][#{area.id}]", area.id, element.areas.include?(area), name: "element[area_ids][]" %><%= label_tag "element[area_ids][#{area.id}]", area.name %><br/>
-        	<% end %>
-      	</div>
-      	<%= hidden_field_tag :design_id, @design.id %>
-      <div class="submit_button"><%= f.submit "Submit", :class => 'button' %></div>
+<%= form_with(model: element, url: [@design, element]) do |f| %>
+  <% if element.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(element.errors.count, "error") %> prohibited this movie from being saved:</h2>
+
+      <ul>
+        <% element.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+  <%= f.label :name %>
+  <%= f.text_field :name %><br />
+  <%= f.label :description %>
+  <%= f.text_field :description %><br />
+
+
+  <div class="submit_button"><%= f.submit "Submit", :class => 'button' %></div>
 
 <% end %>

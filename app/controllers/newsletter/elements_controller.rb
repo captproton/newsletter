@@ -1,9 +1,11 @@
 module Newsletter
   class ElementsController < ::Newsletter::ApplicationController
+    before_action :authenticate_user!
     before_action :find_element, :except => [:new,:create,:index]
     before_action :find_design
     before_action :find_fields, :except => [:new,:create,:index]
     before_action :find_field_types, :only => [:new,:create,:edit,:update]
+    
     # include DeleteableActions  
 
     def index
@@ -11,7 +13,7 @@ module Newsletter
     end
 
     def new
-      @element = Element.new
+      @element = @design.elements.build
       @fields = [Field.new]
     end
 
@@ -19,19 +21,18 @@ module Newsletter
     end
 
     def create
-      @element = Element.new(params[:element])
-      @element.design = @design
+      @element            = @design.elements.build(element_params)
+      @element.updated_by = current_user
 
       respond_to do |format|
-        if @element.save
-          flash[:notice] = 'Element was successfully created.'
-          format.html { redirect_to(design_elements_path(@design)) }
-          format.xml  { render :xml => @element, :status => :created, :location => @element }
+        if @element.save  
+          format.html { redirect_to design_elements_path(@design), notice: 'Design element was successfully created.' }
+          # format.json { render :show, status: :created, location: @element }
         else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @element.errors, :status => :unprocessable_entity }
+          format.html { render :new, status: :unprocessable_entity }
+          # format.json { render json: @element.errors, status: :unprocessable_entity }
         end
-      end
+      end      
     end
     
     def update
@@ -72,10 +73,10 @@ module Newsletter
     end
 
     private
-
+    # Never trust parameters from the scary internet, only allow the white list through.
     def element_params
-      params.require(:element).permit(:name, :description, :html_design, :deleted_at)
+      params.require(:element).permit(:name, :description, :html_design, :deleted_at, :design_id)
     end
-    
+
   end
 end
