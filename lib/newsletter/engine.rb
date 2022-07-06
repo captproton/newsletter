@@ -14,6 +14,11 @@ module Newsletter
     # an easy way to get the root of the gem's directory structure
     PLUGIN_ROOT = File.expand_path(File.join(File.dirname(__FILE__),'..','..'))
     # an easy way to get the root of the gem's assets
+    def plugin_root_path
+      PLUGIN_ROOT
+    end
+    
+
     def self.assets_path
       File.join(PLUGIN_ROOT,'assets')
     end
