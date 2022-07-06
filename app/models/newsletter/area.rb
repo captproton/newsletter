@@ -1,3 +1,5 @@
+require "deleteable"
+
 module Newsletter
   class Area < ApplicationRecord
     belongs_to :design, :class_name => 'Newsletter::Design'

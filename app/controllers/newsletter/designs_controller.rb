@@ -1,10 +1,12 @@
+# FIX_ME uncomment deleteable
 require "deleteable"
 
 module Newsletter
   class DesignsController < ApplicationController
     before_action :find_design, :except => [:new, :create, :index]
 
-    include DeleteableActions
+    # FIX_ME uncomment deleteable
+    # include DeleteableActions
 
     def index
       @designs = Design.order(:name).paginate(page: (params[:page] || 1), 
