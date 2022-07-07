@@ -3,6 +3,7 @@ require "deleteable"
 module Newsletter
   class Area < ApplicationRecord
     belongs_to :design, :class_name => 'Newsletter::Design'
+    belongs_to :updated_by, :class_name => 'User'
     # FIX_ME this should be has_many through:
     has_many :area_elements
     has_many :elements, -> { order("name")},
@@ -14,7 +15,6 @@ module Newsletter
     #   :class_name => 'Newsletter::Element'
     has_many :pieces, -> { order("sequence")}, class_name: 'Newsletter::Piece'
 
-    belongs_to :updated_by, :class_name => 'User'
   
     # FIX_ME uncomment attr_accessor :_destroy
     # attr_accessor :_destroy
@@ -41,11 +41,11 @@ module Newsletter
     end
 
     # builds areas from data pulled out of an exported YAML file by Newsletter::Design.import(class)
-    def self.import(design,data)
+    def self.import(design,data,updater)
       area = self.create!(name: data[:name], 
                         description: data[:description],
-                        design: design
-                        )
+                        design: design,
+                        updated_by: updater)
     end
   end
 end

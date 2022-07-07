@@ -73,11 +73,12 @@ module Newsletter
     end
   
     # builds areas from data pulled out of an exported YAML file by Newsletter::Design.import(class)  
-    def self.import(design,data)
+    def self.import(design,data,updater)
       element = Element.new(:name => data[:name], 
         :html_text => data[:html_text],
         :description => data[:description])
-      element.design = design
+      element.design      = design
+      element.updated_by  = updater
       element.save
       data[:areas].each do |area_data|
         element.areas <<
