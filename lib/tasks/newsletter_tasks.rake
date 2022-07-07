@@ -12,7 +12,7 @@ namespace :newsletter do
   task :import_example_design, :design_name do |t,args|    
     Rails.logger.warn "Importing Example Newsletter Design with name: #{args.design_name}"
     Newsletter::Design.import(
-      File.join(Newsletter::PLUGIN_ROOT,'designs','exports','example-export.yaml'), 
+      File.join(Newsletter::Engine.plugin_root_path,'designs','exports','example-export.yaml'), 
       args.design_name
     )
   end

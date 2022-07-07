@@ -60,39 +60,25 @@ module Newsletter
     # Parameters:
     #   filename - path/name of file on filesystem
     #   design_name => rename design if already taken
-    def self.import(filename,design_name=nil, current_user)
+    def self.import(filename,design_name=nil,updater)      
       raise "You must give a filename to import!" unless filename
       data = YAML.load_file(filename)
       design = nil
       transaction do 
-        # begin transaction
-        # set design_name from given input
         data[:name] = design_name if design_name
-        # create a design with that name
-        # use data for model values
         design = Design.create(:name => data[:name], 
-          html_text:          data[:html_text],
-          description:        data[:description],
-          stylesheet_text:    data[:stylesheet_text],
-          author:         current_user)
-        # create child areas, based on data provided
-        # data[:areas].each do |area_data|
-        # Area.create!(name: data[:name], 
-        #                 description: data[:description],
-        #                 design: design
-        #                 )
-        # end
-
-        # create child elements, based on data provided
+          :html_text => data[:html_text],
+          :description => data[:description],
+          :stylesheet_text => data[:stylesheet_text],
+          updated_by: updater)
+        data[:areas].each do |area_data|
+          Area.import(design,area_data, updater)
+        end
         # data[:elements].each do |element_data|
         #   Element.import(design,element_data)
         # end
-
-        # import images, based on data provided
-        # design.import_images(data[:images])
-        # end of transaction
+        design.import_images(data[:images])
       end
-
       raise "Error importing design: #{design.errors.full_messages.join("\n  ")}" unless design.valid?
       design
     end
@@ -184,6 +170,7 @@ module Newsletter
     def self.designs_path
       Rails.application.config_for(:newsletter).designs_path
     end
+    
         
     protected
     def read_design
