@@ -1,12 +1,3 @@
-module Newsletter
-  class Piece < ApplicationRecord
-    belongs_to :newsletter
-    belongs_to :area
-    belongs_to :element
-  end
-end
-# 
-# 
 =begin rdoc
 Aduthor::    Chris Hauboldt (mailto:biz@lnstar.com)
 Copyright:: 2009 Lone Star Internet Inc.
