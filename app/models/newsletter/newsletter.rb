@@ -14,7 +14,7 @@ module Newsletter
     belongs_to :design, class_name: 'Newsletter::Design', foreign_key: 'design_id', required: true
 
     belongs_to :updated_by, class_name: "User", required: true
-    has_many :pieces, -> { where "#{table_prefix}pieces.deleted_at is null".order("sequence") }, class_name: 'Newsletter::Piece'
+    has_many :pieces, -> { where("deleted_at is null").order("sequence") }, class_name: 'Newsletter::Piece'
   
     # FIX_ME uncomment scopes
     # scope :published, {:conditions => "#{::Newsletter.table_prefix}newsletters.published_at is not null", 
