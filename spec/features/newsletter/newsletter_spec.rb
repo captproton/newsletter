@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Newsletter generation' do
   before(:each) do
+    # login_as(create(:user))
     filename ||= File.join(Newsletter::Engine.plugin_root_path,'designs','exports','example-export.yaml')
 
     @design = Newsletter::Design.import(filename,FFaker::Company.name,FactoryBot.build(:user))
