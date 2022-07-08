@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_08_183821) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_08_203902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,16 +88,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_183821) do
   end
 
   create_table "newsletter_field_values", force: :cascade do |t|
-    t.bigint "newsletter_piece_id", null: false
-    t.bigint "newsletter_field_id", null: false
     t.string "key", null: false
     t.text "value", null: false
     t.integer "updated_by"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["newsletter_field_id"], name: "index_newsletter_field_values_on_newsletter_field_id"
-    t.index ["newsletter_piece_id"], name: "index_newsletter_field_values_on_newsletter_piece_id"
+    t.bigint "piece_id", null: false
+    t.bigint "field_id", null: false
+    t.index ["field_id"], name: "index_newsletter_field_values_on_field_id"
+    t.index ["piece_id"], name: "index_newsletter_field_values_on_piece_id"
   end
 
   create_table "newsletter_fields", force: :cascade do |t|
@@ -166,8 +166,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_183821) do
   add_foreign_key "newsletter_assets", "newsletter_pieces"
   add_foreign_key "newsletter_elements", "newsletter_designs", column: "design_id"
   add_foreign_key "newsletter_elements", "users", column: "updated_by_id"
-  add_foreign_key "newsletter_field_values", "newsletter_fields"
-  add_foreign_key "newsletter_field_values", "newsletter_pieces"
+  add_foreign_key "newsletter_field_values", "newsletter_fields", column: "field_id"
+  add_foreign_key "newsletter_field_values", "newsletter_pieces", column: "piece_id"
   add_foreign_key "newsletter_fields", "newsletter_elements", column: "element_id"
   add_foreign_key "newsletter_fields", "users", column: "updated_by_id"
   add_foreign_key "newsletter_newsletters", "newsletter_designs", column: "design_id"
