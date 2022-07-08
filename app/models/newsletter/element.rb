@@ -12,11 +12,16 @@ module Newsletter
     # self.table_name =  "#{::Newsletter.table_prefix}elements"
     # has_and_belongs_to_many :areas, :class_name => 'Newsletter::Area',
     #   :join_table => "#{{Newsletter.settings.table_prefix}areas_{{Newsletter.settings.table_prefix}elements"
-    # has_many :fields, :order => 'sequence', :class_name => 'Newsletter::Field'
+    has_many :fields, -> { order("sequence") }, :class_name => 'Newsletter::Field'
     # has_many :pieces, :class_name => 'Newsletter::Piece'
     belongs_to :design, :class_name => 'Newsletter::Design'
     belongs_to :updated_by, :class_name => 'User'
   
+    has_many :area_elements
+    has_many :areas, -> { order("name")},
+              through: :area_elements, 
+              :class_name => 'Newsletter::Area'
+
     # scope :by_design, lambda{|design| {:conditions =>{:design_id => design.id}}}
   
     validates_presence_of :name
@@ -81,11 +86,16 @@ module Newsletter
       element.updated_by  = updater
       element.save
       data[:areas].each do |area_data|
+        # old code with Rails 3 syntax
+        # element.areas <<
+        #   Area.find_all_by_design_id_and_name(design.id,area_data[:name])
+        # new code with Rails 7 syntax
+        # https://blog.saeloun.com/2021/03/16/rails-adds-sole-and-find-sole-by.html
         element.areas <<
-          Area.find_all_by_design_id_and_name(design.id,area_data[:name])
+          Area.where(design_id: design.id, name: area_data[:name]).sole
       end
       data[:fields].each do |field_data|
-          Field.import(element,field_data)
+          Field.import(element,field_data, updater)
       end
     end
   

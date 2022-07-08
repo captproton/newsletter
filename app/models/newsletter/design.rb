@@ -74,9 +74,9 @@ module Newsletter
         data[:areas].each do |area_data|
           Area.import(design,area_data, updater)
         end
-        # data[:elements].each do |element_data|
-        #   Element.import(design,element_data)
-        # end
+        data[:elements].each do |element_data|
+          Element.import(design,element_data, updater)
+        end
         design.import_images(data[:images])
       end
       raise "Error importing design: #{design.errors.full_messages.join("\n  ")}" unless design.valid?

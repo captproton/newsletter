@@ -14,7 +14,7 @@ module Newsletter
     belongs_to :design, class_name: 'Newsletter::Design', foreign_key: 'design_id', required: true
 
     belongs_to :updated_by, class_name: "User", required: true
-    # has_many :pieces, -> { order("sequence").where "#{table_prefix}pieces.deleted_at is null" }, class_name: 'Newsletter::Piece'
+    has_many :pieces, -> { where("deleted_at is null").order("sequence") }, class_name: 'Newsletter::Piece'
   
     # FIX_ME uncomment scopes
     # scope :published, {:conditions => "#{::Newsletter.table_prefix}newsletters.published_at is not null", 
@@ -99,7 +99,7 @@ module Newsletter
 
     # retrieve a newsletter area by name - for use in render/views
     def area(name)
-      design.areas.by_name(name).first
+      design.areas.find_by("name = ?", name)
     end
   
     # retrieve a list of locals to send to the main layout of the newsletter design view

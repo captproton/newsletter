@@ -3,7 +3,6 @@ FactoryBot.define do
     name { "MyString" }
     element { nil }
     label { "MyString" }
-    sequence { 1 }
     is_required { false }
     description { "MyString" }
     type { "" }

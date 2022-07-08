@@ -11,19 +11,20 @@ require "deleteable"
 
 module Newsletter
     class Field < ApplicationRecord
-      # self.table_name =  "#{::Newsletter.table_prefix}fields"
-      # self.table_name =  "#{Newsletter.settings.table_prefix}fields"
-      # FIX_ME: table_name should be rehabbed
+      # ##
       self.table_name =  "newsletter_fields"
       belongs_to :element, :class_name => 'Newsletter::Element'
-      # has_many :field_values, :class_name => 'New sletter::FieldValue'
-      # belongs_to :updated_by, :class_name => 'User'
+      has_many :field_values, :class_name => 'Newsletter::FieldValue'
+      belongs_to :updated_by, :class_name => 'User'
 
+      # FIX_ME: Rails 3
       # attr_accessor :_destroy
 
       acts_as_list :scope => :element, :column => :sequence
 
       validates_presence_of :name
+
+      #### 
 =begin
       FIXME: make this work with deletable or convert to auditable, and extend it to access destroyed records
       validates_uniqueness_of :name, :scope => [:element_id], :unless => Proc.new { |field|
@@ -50,7 +51,7 @@ module Newsletter
       end
 
       # returns field data so that Newsletter::Design.export(instance) can export itself to a YAML file
-      def self.import(element,data)
+      def self.import(element,data, updater)
         return unless data[:type]
         field = data[:type].constantize.new(
           :name => data[:name],

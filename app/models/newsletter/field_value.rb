@@ -8,10 +8,6 @@ Used to store key-value pairs for a NewsletterPiece's NewsletterFields
 
 module Newsletter
   class FieldValue < ApplicationRecord
-    # belongs_to :newsletter_piece
-    # belongs_to :newsletter_field
-    table_prefix = 'newsletter_'
-    self.table_name =  "#{table_prefix}field_values"
     belongs_to :piece, :class_name => 'Newsletter::Piece'
     belongs_to :field, :class_name => 'Newsletter::Field'
     scope :by_piece, lambda{|piece| where("piece_id IS NOT NULL AND piece_id=?",piece.try(:id))}

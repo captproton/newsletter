@@ -32,6 +32,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'capybara'
+  spec.add_development_dependency 'selenium-webdriver', '~> 4.3'
+  spec.add_development_dependency 'puma', '~> 5.6', '>= 5.6.4'
   spec.add_development_dependency 'factory_bot_rails'
   spec.add_development_dependency 'ffaker'
   spec.add_development_dependency 'devise', '~> 4.8', '>= 4.8.1'
