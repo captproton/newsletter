@@ -4,6 +4,12 @@ module Newsletter
   class Engine < ::Rails::Engine
     isolate_namespace Newsletter
 
+    initializer "newsletter.factories", :after => "factory_bot.set_factory_paths" do
+      FactoryBot.definition_file_paths << File.expand_path('../../../spec/factories', __FILE__) if defined?(FactoryBot)
+      # FactoryBot.definition_file_paths << File.expand_path('../../spec/factories', __FILE__) if defined?(FactoryBot)
+      # FactoryBot.definition_file_paths << File.expand_path('../spec/factories', __FILE__) if defined?(FactoryBot)
+    end
+
     config.generators do |g|
       g.test_framework :rspec, fixtures: false
       g.fixture_replacement :factory_bot, dir: 'spec/factories'

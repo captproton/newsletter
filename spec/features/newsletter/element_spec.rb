@@ -2,8 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'Element management', type: :feature do
   before(:each) do
-    @design = import_design
-    @newsletter = FactoryBot.create(:newsletter, design: @design)
+    filename = File.join(Newsletter::Engine.plugin_root_path,'designs','exports','example-export.yaml')
+    @design  = Newsletter::Design.import(filename,"My Design",FactoryBot.build(:user))
+    # @newsletter = FactoryBot.create(:newsletter, design: @design)
+    @newsletter = FactoryBot.create(:newsletter, design: @design, updated_by: FactoryBot.build(:user))
   end
 
   it "creates an element with valid attributes", js: true do

@@ -8,7 +8,11 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'devise'
 require_relative 'support/controller_macros'
+require_relative 'support/factory_bot'
 
+# the two lines unsuccessfully attempt to grab all support files
+# Dir[Newsletter::Engine.root.join('/spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join("../../spec/support/**/*.rb")]
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -65,6 +69,8 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   ## App-specific 
+  # factory_bot
+  
   # devise users
   config.include Devise::Test::ControllerHelpers, :type => :controller
   config.include FactoryBot::Syntax::Methods

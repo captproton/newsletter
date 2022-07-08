@@ -7,15 +7,12 @@ module Newsletter
       FileUtils.rm_rf(File.join(Rails.root, 'public', 'images', 'My_Design'))
       gem_root = File.expand_path(File.join(File.dirname(__FILE__),'..','..'))
 
-      company_name ||=  FFaker::Company.name
-      current_user =    FactoryBot.create(:user)
+      # company_name ||=  FFaker::Company.name
       design_name  =    "My Design"
       file ||= File.join(gem_root,'..','designs','exports','example-export.yaml')
-      @design = Design.import(file, design_name, current_user)
+      @design = Design.import(filename,design_name, FactoryBot.build(:user))
       # @design.update_attribute(:stylesheet_text, ".blah{background-color: red}")
       # @design.update_attribute :stylesheet_text, "howdy"
-      @design
-
     end
 
     it "sets the name correctly" do

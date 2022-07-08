@@ -4,8 +4,10 @@ RSpec.feature 'Newsletter generation' do
   before(:each) do
     filename ||= File.join(Newsletter::Engine.plugin_root_path,'designs','exports','example-export.yaml')
 
-    @design = Newsletter::Design.import(filename,FFaker::Company.name,current_user)
-    @newsletter = FactoryBot.create(:newsletter, design: @design)
+    @design = Newsletter::Design.import(filename,FFaker::Company.name,FactoryBot.build(:user))
+    # @newsletter = FactoryBot.create(:newsletter, design: @design)
+    @newsletter = FactoryBot.create(:newsletter, design: @design, updated_by: FactoryBot.build(:user))
+
   end
 
   it "has javascript available in editor" do

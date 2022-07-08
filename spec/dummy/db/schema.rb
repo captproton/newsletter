@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_06_212135) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_08_024338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,17 +102,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_06_212135) do
 
   create_table "newsletter_fields", force: :cascade do |t|
     t.string "name"
-    t.bigint "newsletter_element_id", null: false
     t.string "label"
     t.integer "sequence"
     t.boolean "is_required"
     t.string "description"
     t.string "type"
-    t.integer "updated_by"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["newsletter_element_id"], name: "index_newsletter_fields_on_newsletter_element_id"
+    t.bigint "element_id", null: false
+    t.bigint "updated_by_id", null: false
+    t.index ["element_id"], name: "index_newsletter_fields_on_element_id"
+    t.index ["updated_by_id"], name: "index_newsletter_fields_on_updated_by_id"
   end
 
   create_table "newsletter_newsletters", force: :cascade do |t|
@@ -167,7 +168,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_06_212135) do
   add_foreign_key "newsletter_elements", "users", column: "updated_by_id"
   add_foreign_key "newsletter_field_values", "newsletter_fields"
   add_foreign_key "newsletter_field_values", "newsletter_pieces"
-  add_foreign_key "newsletter_fields", "newsletter_elements"
+  add_foreign_key "newsletter_fields", "newsletter_elements", column: "element_id"
+  add_foreign_key "newsletter_fields", "users", column: "updated_by_id"
   add_foreign_key "newsletter_newsletters", "newsletter_designs", column: "design_id"
   add_foreign_key "newsletter_newsletters", "users", column: "updated_by_id"
   add_foreign_key "newsletter_pieces", "newsletter_areas"

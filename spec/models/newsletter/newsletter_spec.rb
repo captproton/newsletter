@@ -6,8 +6,11 @@ module Newsletter
 
     include Capybara::DSL
     before(:each) do
-      @design = import_design
-      @newsletter = FactoryBot.create(:newsletter, design: @design)
+      # company_name ||=  FFaker::Company.name
+      design_name  =    "My Design"
+      file ||= File.join(gem_root,'..','designs','exports','example-export.yaml')
+      @design = Design.import(filename,design_name, FactoryBot.build(:user))
+      @newsletter = FactoryBot.create(:newsletter, design: @design, updated_by: FactoryBot.build(:user))
       @newsletter = Newsletter::Newsletter.find(@newsletter.id)
     end
 
