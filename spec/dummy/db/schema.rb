@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_08_024338) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_08_183821) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -131,17 +131,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_024338) do
   end
 
   create_table "newsletter_pieces", force: :cascade do |t|
-    t.bigint "newsletter_newsletter_id", null: false
-    t.bigint "newsletter_area_id", null: false
-    t.bigint "newsletter_element_id", null: false
     t.integer "sequence", null: false
     t.integer "updated_by"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["newsletter_area_id"], name: "index_newsletter_pieces_on_newsletter_area_id"
-    t.index ["newsletter_element_id"], name: "index_newsletter_pieces_on_newsletter_element_id"
-    t.index ["newsletter_newsletter_id"], name: "index_newsletter_pieces_on_newsletter_newsletter_id"
+    t.bigint "newsletter_id", null: false
+    t.bigint "area_id", null: false
+    t.bigint "element_id", null: false
+    t.index ["area_id"], name: "index_newsletter_pieces_on_area_id"
+    t.index ["element_id"], name: "index_newsletter_pieces_on_element_id"
+    t.index ["newsletter_id"], name: "index_newsletter_pieces_on_newsletter_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -172,7 +172,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_024338) do
   add_foreign_key "newsletter_fields", "users", column: "updated_by_id"
   add_foreign_key "newsletter_newsletters", "newsletter_designs", column: "design_id"
   add_foreign_key "newsletter_newsletters", "users", column: "updated_by_id"
-  add_foreign_key "newsletter_pieces", "newsletter_areas"
-  add_foreign_key "newsletter_pieces", "newsletter_elements"
-  add_foreign_key "newsletter_pieces", "newsletter_newsletters"
+  add_foreign_key "newsletter_pieces", "newsletter_areas", column: "area_id"
+  add_foreign_key "newsletter_pieces", "newsletter_elements", column: "element_id"
+  add_foreign_key "newsletter_pieces", "newsletter_newsletters", column: "newsletter_id"
 end
