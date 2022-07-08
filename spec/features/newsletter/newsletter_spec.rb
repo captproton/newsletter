@@ -59,6 +59,7 @@ RSpec.feature 'Newsletter generation' do
   end
 
   it "allows you to remove an inline asset from a piece", js: true do
+    pending "not yet implemented yet"
     Newsletter::AssetUploader.enable_processing = true
     visit "/newsletter/newsletters/#{@newsletter.id}/edit" 
     area = @newsletter.area('left_column')
@@ -98,6 +99,7 @@ RSpec.feature 'Newsletter generation' do
   end
 
   it "doesn't break when you put double quotes in a piece text field", js: true do
+    pending "we need more info on what the test is trying to achieve"
     visit "/newsletter/newsletters/#{@newsletter.id}/edit" 
     area = @newsletter.area('right_column')
     element = area.elements.detect{|e| e.name.eql?('Right Column Headline')}
