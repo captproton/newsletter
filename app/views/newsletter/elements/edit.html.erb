@@ -1,6 +1,7 @@
 <%= title "Edit Element '#{@element.name}'" %>
 
-<%= render :partial => 'form' %>
+<%= render "form", element: @element %>
+
 
 <%= content_for :page_navigation do %>
   <div>
