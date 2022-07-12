@@ -79,7 +79,7 @@ module Newsletter
 
     # generates a public url for the newsletter
     def public_url(mode='')
-      "#{::Newsletter.site_url}/newsletters/#{self[:id]}#{mode.blank? ? '' : "/#{mode}"}"
+      "#{Rails.application.config_for(:newsletter).site_url}/newsletters/#{self[:id]}#{mode.blank? ? '' : "/#{mode}"}"
     end
 
     def image_uri(filename)
