@@ -24,6 +24,7 @@ module Newsletter
     # scope :active, where(:deleted_at => nil)
     # scope :by_area, lambda {|area| {:conditions => {:area_id => area.id, :deleted_at => nil}}}
     # scope :by_newsletter, lambda {|newsletter| {:conditions => {:newsletter_id => newsletter.id, :deleted_at => nil}}}
+    scope :by_newsletter, ->(newsletter) { where('newsletter_id = ?', newsletter_id).where("deleted_at is null")  }
 
     attr_accessor :field_values_attributes
 

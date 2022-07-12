@@ -55,12 +55,12 @@ module Newsletter
   
     protected
     def find_element
-      @element ||= Element.find_by_id(params[:id])
+      @element ||= Element.find_by(id: params[:id])
     end
   
     def find_design
       return @design ||= @element.design if @element && @element.design.present?
-      @design ||= Design.find_by_id(params[:design_id])
+      @design ||= Design.find_by(id: params[:design_id])
     end
   
     def find_fields

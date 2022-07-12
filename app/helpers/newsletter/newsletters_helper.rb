@@ -16,7 +16,7 @@ module Newsletter
       options.each_pair do |key,value|
         options_text << %Q| #{key}="#{ERB::Util.html_escape value}"|
       end
-      %Q|<img src="#{ERB::Util.html_escape ::Newsletter.site_url + 
+      %Q|<img src="#{ERB::Util.html_escape Rails.application.config_for(:newsletter).site_url + 
         @newsletter.image_uri(image_filename)
         }"#{options_text}/>|.html_safe
     end

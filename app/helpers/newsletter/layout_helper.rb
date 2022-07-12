@@ -28,7 +28,8 @@ module Newsletter
     end
 
     def site_url
-      ::Newsletter.site_url
+      # ::Newsletter.site_url
+      Rails.application.config_for(:newsletter).site_url
     rescue
       # :nocov: shouldn't happen
       "#{default_url_options[:protocol]||'http'}://#{default_url_options[:domain]}"
