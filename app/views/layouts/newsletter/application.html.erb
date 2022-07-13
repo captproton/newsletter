@@ -8,6 +8,42 @@
     <%= javascript_include_tag "newsletter/application" %>
     <%= csrf_meta_tags %>
     <%= yield :head %>
+
+    <style>
+      .alert {
+        position: relative;
+        padding: 1rem 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          border-bottom-color: transparent;
+          border-left-color: transparent;
+        border-radius: .25rem;
+      }
+
+      .alert-primary {
+        color: #084298;
+        background-color: #cfe2ff;
+        border-color: #b6d4fe;
+      }
+      .alert-notice {
+        
+      }
+
+      .alert-secondary {
+        color: #41464b;
+        background-color: #e2e3e5;
+        border-color: #d3d6d8;
+      }
+
+      .alert-success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border-color: #badbcc;
+      }
+
+    </style>
   </head>
   <body>
     <div id="top">
@@ -28,36 +64,23 @@
     <div style="background-color: #fff;">
       <div id="menu">
         <ul>
-          <li>
-            <span onClick="$('#setup_submenu').toggle();return false" style="cursor: pointer;">Setup</span>
-
-            <ul id='setup_submenu' <%= ' style="display:none"'.html_safe unless request.path =~ %r#/newsletter/designs|setup# %> >
-              <%= content_tag(:li, link_to('Newsletter Designs', Newsletter.settings.designs_path)) if can?(:manage, Newsletter::Design) %>
+          <li><span onClick="$('#setup_submenu').toggle();return false" style="cursor: pointer;">Setup</span>
+            <ul id='setup_submenu' <%= ' style="display:none"'.html_safe unless request.path =~ %r#/newsletter/designs|setup# %>>
+              <%= content_tag(:li, link_to('Newsletter Designs', designs_path)) if can?(:manage, Newsletter::Design) %>
             </ul>
-
           </li>
-          <%= content_tag(:li, link_to('Newsletters',  Newsletter.settings.newsletters_path)) if can?(:manage, Newsletter::Newsletter) %>
+          <%= content_tag(:li, link_to('Newsletters', newsletters_path)) if can?(:manage, Newsletter::Newsletter) %>
         </ul>
       </div>
       <div id="page_content">
-            <div id="flash_notice">
-              lookie
-            </div>
-            <div id="flash_alert">
-              Alert!
-            </div>
             <% flash.each do |msg_type, message| %>
-              <div class="alert alert-primary alert-<%= msg_type %>"" role="alert">
+              <div class="alert alert-primary alert-<%= msg_type %>" role="alert">
                 <div class="container">
                   <button class="close" data-dismiss="alert"><span>×</span></button>
                   <%= message %>
                 </div>
               </div>
             <% end %>
-
-            <% flash.each do |name, msg| -%>
-              <%= content_tag :div, msg, :id => "flash_#{name}" %>
-            <% end -%>
             
             <% if show_title? -%>
               <h1><%=h yield(:title) %></h1>
