@@ -1,11 +1,12 @@
 <% unless params[:editor] %>
-<% area.pieces.by_newsletter(@newsletter).each do |piece| %>
-		<% begin %>
-		<%= render :inline => piece.element.html_text, :locals => piece.locals %>
-		<% rescue => e %>
-		<!-- Error rendering piece: <%=  piece.element.html_text %>/ <%= piece.id %> with data <%=h piece.locals.inspect %>  and template: <%=h piece.element.html_text %> <br/> <%= e.message %><br/> <%= e.backtrace.join(",") %> -->
-		<% end %>
-<% end %>
+	<h1>editor</h1>
+	<% area.pieces.by_newsletter(@newsletter).each do |piece| %>
+			<% begin %>
+			<%= render :inline => piece.element.html_text, :locals => piece.locals %>
+			<% rescue => e %>
+			<!-- Error rendering piece: <%=  piece.element.html_text %>/ <%= piece.id %> with data <%=h piece.locals.inspect %>  and template: <%=h piece.element.html_text %> <br/> <%= e.message %><br/> <%= e.backtrace.join(",") %> -->
+			<% end %>
+	<% end %>
 <% else %>
 <%= div_for area do %>
 	<% area.pieces.by_newsletter(@newsletter).each do |piece| %>
