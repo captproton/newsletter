@@ -339,6 +339,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails (~> 1.0)
   thin
+  turbo-rails (~> 1.1)
   will_paginate (~> 3.3, >= 3.3.1)
 
 BUNDLED WITH
