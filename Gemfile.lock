@@ -317,6 +317,7 @@ DEPENDENCIES
   binding_of_caller
   cancancan (~> 3.4)
   capybara
+  cssbundling-rails (~> 1.1)
   devise (~> 4.8, >= 4.8.1)
   factory_bot_rails
   ffaker
@@ -336,6 +337,7 @@ DEPENDENCIES
   rspec-rails
   selenium-webdriver (~> 4.3)
   sprockets-rails
+  stimulus-rails (~> 1.0)
   thin
   will_paginate (~> 3.3, >= 3.3.1)
 
