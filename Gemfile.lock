@@ -4,9 +4,13 @@ PATH
     newsletter (0.1.0)
       acts_as_list (~> 1.0, >= 1.0.4)
       cancancan (~> 3.4)
+      cssbundling-rails
       jquery-rails (~> 4.5)
       jquery-ui-rails (~> 6.0, >= 6.0.1)
+      jsbundling-rails
       rails (>= 7.0.3)
+      stimulus-rails
+      turbo-rails
       will_paginate (~> 3.3, >= 3.3.1)
 
 GEM
@@ -100,6 +104,8 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
+    cssbundling-rails (1.1.1)
+      railties (>= 6.0.0)
     daemons (1.4.1)
     debug_inspector (1.1.0)
     devise (4.8.1)
@@ -147,6 +153,8 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+    jsbundling-rails (1.0.3)
+      railties (>= 6.0.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -272,6 +280,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    stimulus-rails (1.0.4)
+      railties (>= 6.0.0)
     strscan (3.0.3)
     thin (1.8.1)
       daemons (~> 1.0, >= 1.0.9)
@@ -279,6 +289,10 @@ GEM
       rack (>= 1, < 3)
     thor (1.2.1)
     timeout (0.3.0)
+    turbo-rails (1.1.1)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     warden (1.2.9)
@@ -303,6 +317,7 @@ DEPENDENCIES
   binding_of_caller
   cancancan (~> 3.4)
   capybara
+  cssbundling-rails (~> 1.1)
   devise (~> 4.8, >= 4.8.1)
   factory_bot_rails
   ffaker
@@ -310,6 +325,7 @@ DEPENDENCIES
   guard-rspec
   jquery-rails (~> 4.5)
   jquery-ui-rails (~> 6.0, >= 6.0.1)
+  jsbundling-rails (~> 1.0)
   nested_form (~> 0.3.2)
   newsletter!
   pg
@@ -321,7 +337,9 @@ DEPENDENCIES
   rspec-rails
   selenium-webdriver (~> 4.3)
   sprockets-rails
+  stimulus-rails (~> 1.0)
   thin
+  turbo-rails (~> 1.1)
   will_paginate (~> 3.3, >= 3.3.1)
 
 BUNDLED WITH
