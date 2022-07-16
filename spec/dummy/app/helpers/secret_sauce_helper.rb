@@ -1,0 +1,2 @@
+module SecretSauceHelper
+end

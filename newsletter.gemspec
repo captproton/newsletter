@@ -24,11 +24,25 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.0.3"
+  spec.add_dependency 'jsbundling-rails'
+  spec.add_dependency 'cssbundling-rails'
+  spec.add_dependency 'stimulus-rails'
+  spec.add_dependency 'turbo-rails'
+
+  spec.add_dependency  "acts_as_list", "~> 1.0", ">= 1.0.4"
+  spec.add_dependency  "cancancan", "~> 3.4"
+  spec.add_dependency 'will_paginate', '~> 3.3', '>= 3.3.1'
+  spec.add_dependency 'jquery-rails', '~> 4.5'
+  spec.add_dependency 'jquery-ui-rails', '~> 6.0', '>= 6.0.1'
 
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'capybara'
+  spec.add_development_dependency 'selenium-webdriver', '~> 4.3'
+  spec.add_development_dependency 'puma', '~> 5.6', '>= 5.6.4'
   spec.add_development_dependency 'factory_bot_rails'
   spec.add_development_dependency 'ffaker'
+  spec.add_development_dependency 'devise', '~> 4.8', '>= 4.8.1'
+
 
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-rails'

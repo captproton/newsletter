@@ -6,19 +6,33 @@ Newsletter::Designs define a main layout, with areas to group Elements/Pieces.
 
 
 =end
+# FIX_ME uncomment deleteable
+# This was commented out when this error was caused at http://localhost:3000/newsletter/designs/3/elements
+# ArgumentError (Support for calling #default_scope without a block is removed. For example instead of `default_scope where(color: 'red')`, please use `default_scope { where(color: 'red') }`. (Alternatively you can just redefine self.default_scope.)):
+
+# (eval):1:in `initialize'
+# Started GET "/newsletter/designs/3/elements" for ::1 at 2022-07-05 12:34:44 -0700
+# Processing by Newsletter::ElementsController#index as HTML
+#   Parameters: {"design_id"=>"3"}
+#   User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["id", 1], ["LIMIT", 1]]
+# Completed 500 Internal Server Error in 28ms (ActiveRecord: 4.5ms | Allocations: 7804)
+
+
+# require "deleteable"
 
 module Newsletter
   class Design < ApplicationRecord
-    # has_many :areas, :order => :name, :class_name => 'Newsletter::Area'
     has_many :elements, -> { order("name") }, class_name: 'Newsletter::Element'
-    belongs_to :updated_by, :class_name => 'User'
+    has_many :areas, -> { order("name") }, :class_name => 'Newsletter::Area'
+
+    has_many :newsletters, foreign_key: :newsletter_design_id
+    belongs_to :updated_by, required: true, class_name: "User"
     #relationships above
 
-    # FIX_ME turn the active scope back on
-    # scope :active, :conditions => {:deleted_at => nil}
+    scope :active, -> { where("deleted_at is null") }
     # scopes above
 
-    validates :name, presence: true, uniqueness: true
+    # validates :name, presence: true, uniqueness: true
     # validations above
 
     # attr_protected :id
@@ -27,7 +41,7 @@ module Newsletter
 
     # Export a design's data to a YAML file. 
     def export(filename=nil)
-      filename = "#{::Newsletter.designs_path}/exports/#{name_as_path}-export.yaml" unless filename
+      filename = "#{Newsletter.settings.designs_path}/exports/#{name_as_path}-export.yaml" unless filename
       FileUtils.mkdir_p(File.dirname(filename))
       File.open(filename,'w') do |file|
         YAML.dump( {
@@ -46,7 +60,7 @@ module Newsletter
     # Parameters:
     #   filename - path/name of file on filesystem
     #   design_name => rename design if already taken
-    def self.import(filename,design_name=nil)
+    def self.import(filename,design_name=nil,updater)      
       raise "You must give a filename to import!" unless filename
       data = YAML.load_file(filename)
       design = nil
@@ -55,12 +69,13 @@ module Newsletter
         design = Design.create(:name => data[:name], 
           :html_text => data[:html_text],
           :description => data[:description],
-          :stylesheet_text => data[:stylesheet_text])
+          :stylesheet_text => data[:stylesheet_text],
+          updated_by: updater)
         data[:areas].each do |area_data|
-          Area.import(design,area_data)
+          Area.import(design,area_data, updater)
         end
         data[:elements].each do |element_data|
-          Element.import(design,element_data)
+          Element.import(design,element_data, updater)
         end
         design.import_images(data[:images])
       end
@@ -77,7 +92,8 @@ module Newsletter
     # returns the path to the base of the design's files
     def base_design_path(this_name=nil)
       this_name ||= name
-      File.join(::Newsletter.designs_path,'designs',name_as_path(this_name))
+      ndp = 
+      File.join(::Newsletter::Design.designs_path,'designs',name_as_path(this_name))
     end
 
     # returns the image filenames inside a design
@@ -135,13 +151,13 @@ module Newsletter
       self[:name] = new_name
     end
   
-    def save(*args)
-      transaction do 
-        move_design_on_name_change
-        write_design
-        super
-      end
-    end  
+    # def save(*args)
+    #   transaction do 
+    #     move_design_on_name_change
+    #     write_design
+    #     super
+    #   end
+    # end  
   
     # returns a version of name that is nice for filesytem use
     def name_as_path(this_name=nil)
@@ -151,6 +167,11 @@ module Newsletter
     # FIX_ME turn Deletable back on
     # include Deleteable
 
+    def self.designs_path
+      Rails.application.config_for(:newsletter).designs_path
+    end
+    
+        
     protected
     def read_design
       File.readlines(view_path).join

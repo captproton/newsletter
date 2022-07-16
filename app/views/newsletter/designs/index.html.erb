@@ -1,0 +1,28 @@
+<%= title "Designs" %>
+
+<table class="list" cellpadding="1" cellspacing="0">
+  <tr class="title">
+    <td>Name</td>
+    <td>Description</td>
+    <td colspan="2"> </td>    
+  </tr>
+  <% for design in @designs %>
+    <tr class="<%= cycle('odd','even') %>" id="design_<%= design.id %>">
+      <td><%=h design.name %></td>
+      <td><%=h design.description %></td>
+      <td><%= link_to "Edit", edit_design_path(design), :class => 'button' %></td>
+      <td>
+      <%= link_to 'Destroy Design', design, method: :delete, data: { confirm: 'Are you sure?' } , :class => 'button'%>
+      <%= link_to "Delete", design, :confirm => 'Are you sure?', :method => :delete, :class => 'button' %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+
+<%#= content_for :page_navigation do %>
+<div>
+  <%#= will_paginate @designs %>
+  <%= link_to "New Design", new_design_path, :class => 'button' %>
+</div>
+<%# end %>

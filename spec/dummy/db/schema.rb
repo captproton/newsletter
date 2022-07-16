@@ -10,52 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_25_021215) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_06_212135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "newsletter_areas", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description"
-    t.bigint "newsletter_designs_id", null: false
-    t.integer "updated_by"
-    t.datetime "delelted_at"
+  create_table "movies", force: :cascade do |t|
+    t.string "title"
+    t.string "director"
+    t.string "storyline"
+    t.datetime "watched_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["newsletter_designs_id"], name: "index_newsletter_areas_on_newsletter_designs_id"
-  end
-
-  create_table "newsletter_designs", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description"
-    t.text "html_design"
-    t.integer "updated_by"
-    t.text "stysheet_text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "newsletter_elements", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description"
-    t.text "html_design"
-    t.bigint "newsletter_designs_id", null: false
-    t.integer "updated_by"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["newsletter_designs_id"], name: "index_newsletter_elements_on_newsletter_designs_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
-    t.string "phone"
+    t.string "first_name", default: "", null: false
+    t.string "last_name", default: "", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "newsletter_areas", "newsletter_designs", column: "newsletter_designs_id"
-  add_foreign_key "newsletter_elements", "newsletter_designs", column: "newsletter_designs_id"
 end

@@ -1,0 +1,14 @@
+
+<%= title "Edit Design" %>
+
+<%= render "form", design: @design %>
+
+<br>
+
+<%= content_for :page_navigation do %>
+  <div>
+    <%= link_to "View All", designs_path, :class => 'button' %>
+    <%= link_to 'Manage Elements', design_elements_path(@design),
+  		 :class => 'button' %>
+  </div>
+<% end %>

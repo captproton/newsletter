@@ -1,0 +1,8 @@
+<%= title "New #{ @piece.element.name } in Area: #{ @piece.area.name.humanize }" %>
+<p><%= @piece.element.description %></p>
+<%= render :partial => 'form' %>
+
+<%= content_for :page_navigation do %>
+    <%= link_to 'Back', edit_newsletter_path(@newsletter), :class => 'button' %>
+<% end %>
+

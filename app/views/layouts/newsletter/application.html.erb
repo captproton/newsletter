@@ -1,15 +1,95 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Newsletter</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <!-- iReach template -->
+    <title><%= h(yield(:title) || "iReach Newsletter Manager") %></title>
+    <%= stylesheet_link_tag    "newsletter/application", :media => "all" %>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/le-frog/jquery-ui.css" media="screen" rel="stylesheet" type="text/css" />
+    <%= javascript_include_tag "newsletter/application" %>
+    <%= csrf_meta_tags %>
+    <%= yield :head %>
 
-  <%= stylesheet_link_tag    "newsletter/application", media: "all" %>
-</head>
-<body>
+    <style>
+      .alert {
+        position: relative;
+        padding: 1rem 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          border-bottom-color: transparent;
+          border-left-color: transparent;
+        border-radius: .25rem;
+      }
 
-<%= yield %>
+      .alert-primary {
+        color: #084298;
+        background-color: #cfe2ff;
+        border-color: #b6d4fe;
+      }
+      .alert-notice {
+        
+      }
 
-</body>
+      .alert-secondary {
+        color: #41464b;
+        background-color: #e2e3e5;
+        border-color: #d3d6d8;
+      }
+
+      .alert-success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border-color: #badbcc;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="top">
+      <%= image_tag "newsletter/iReach_logo.gif", 
+          width: "269", 
+          height:"85", 
+          style: "float: left;" %>
+      <%= image_tag "newsletter/TopCenter.gif", 
+          width: "435", 
+          height: "85", 
+          style: "float: left;" %>
+      <%= image_tag "newsletter/TopRight.gif", 
+          width: "62", 
+          height: "85", 
+          style: "float: right;" %>
+      &nbsp;
+    </div>
+    <div style="background-color: #fff;">
+      <div id="menu">
+        <ul>
+          <li><span onClick="$('#setup_submenu').toggle();return false" style="cursor: pointer;">Setup</span>
+            <ul id='setup_submenu' <%= ' style="display:none"'.html_safe unless request.path =~ %r#/newsletter/designs|setup# %>>
+              <%= content_tag(:li, link_to('Newsletter Designs', designs_path)) if can?(:manage, Newsletter::Design) %>
+            </ul>
+          </li>
+          <%= content_tag(:li, link_to('Newsletters', newsletters_path)) if can?(:manage, Newsletter::Newsletter) %>
+        </ul>
+      </div>
+      <div id="page_content">
+            <% flash.each do |msg_type, message| %>
+              <div class="alert alert-primary alert-<%= msg_type %>" role="alert">
+                <div class="container">
+                  <button class="close" data-dismiss="alert"><span>×</span></button>
+                  <%= message %>
+                </div>
+              </div>
+            <% end %>
+            
+            <% if show_title? -%>
+              <h1><%=h yield(:title) %></h1>
+            <% end -%>
+            <%= yield %>
+            
+            <%= yield :page_navigation %>
+      </div>
+    </div>
+    <%= image_tag "newsletter/BottomRight.gif", width: "62", height: "85", style: "float: right;" %>
+  </body>
 </html>

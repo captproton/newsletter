@@ -1,12 +1,20 @@
+require "deleteable"
+
 module Newsletter
   class Area < ApplicationRecord
     belongs_to :design, :class_name => 'Newsletter::Design'
+    belongs_to :updated_by, :class_name => 'User'
     # FIX_ME this should be has_many through:
+    has_many :area_elements
+    has_many :elements, -> { order("name")},
+              through: :area_elements, 
+              :class_name => 'Newsletter::Element'
+    # the above should update the commented out below (pre-rails-4)
     # has_and_belongs_to_many :elements, :order => 'name', :join_table => 
     #   "#{::Newsletter.table_prefix}areas_#{::Newsletter.table_prefix}elements",
     #   :class_name => 'Newsletter::Element'
-    # has_many  :pieces, :order => 'sequence', :class_name => "Newsletter::Piece"
-    belongs_to :updated_by, :class_name => 'User'
+    has_many :pieces, -> { order("sequence")}, class_name: 'Newsletter::Piece'
+
   
     # FIX_ME uncomment attr_accessor :_destroy
     # attr_accessor :_destroy
@@ -33,10 +41,11 @@ module Newsletter
     end
 
     # builds areas from data pulled out of an exported YAML file by Newsletter::Design.import(class)
-    def self.import(design,data)
-      area = Area.create(:name => data[:name], :description => data[:description])
-      area.design = design
-      area.save
+    def self.import(design,data,updater)
+      area = self.create!(name: data[:name], 
+                        description: data[:description],
+                        design: design,
+                        updated_by: updater)
     end
   end
 end
