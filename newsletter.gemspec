@@ -24,6 +24,11 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.0.3"
+  spec.add_dependency 'jsbundling-rails'
+  spec.add_dependency 'cssbundling-rails'
+  spec.add_dependency 'stimulus-rails'
+  spec.add_dependency 'turbo-rails'
+
   spec.add_dependency  "acts_as_list", "~> 1.0", ">= 1.0.4"
   spec.add_dependency  "cancancan", "~> 3.4"
   spec.add_dependency 'will_paginate', '~> 3.3', '>= 3.3.1'
