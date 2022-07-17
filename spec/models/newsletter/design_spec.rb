@@ -65,14 +65,23 @@ module Newsletter
       end
             
       it "moves its images" do
+        ## this is OK for now, and it will be irrelevant once switched to active_storage
+        old_images_path = @design.images_path
+        old_name = @design.name
+        expect(@design.images_path).to include("public/images/#{@design.name_as_path(@design.name)}")
+        expect(File.exist?(@design.images_path)).to be true
+        new_name = @design.name + " NEW!"
+
         # remove old designs
         FileUtils.rm_rf(File.join(Rails.application.config_for(:newsletter).designs_path,'designs',
           'My_Design_NEW_'))
         # remove old images
         FileUtils.rm_rf(File.join(Rails.root, 'public', 'images', 
           'My_Design_NEW_'))
-        # expect(@design.images_path).to  eq "something"
+        expect{@design.update(name: new_name)}.not_to raise_error
+        expect(@design.name).to eq new_name
         expect(@design.images_path).to include("public/images/#{@design.name_as_path(new_name)}")
+        # fails to rename the image
         expect(File.exist?(old_images_path)).to be false
         expect(File.exist?(@design.images_path)).to be true
       end
