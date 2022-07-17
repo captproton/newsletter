@@ -10,3 +10,5 @@
 spec/dummy/designs
 # do not keep images from testing
 public/images
+# front-end builds
+spec/dummy/app/assets/builds/
