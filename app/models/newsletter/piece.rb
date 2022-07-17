@@ -12,7 +12,7 @@ module Newsletter
     belongs_to :newsletter, :class_name => 'Newsletter::Newsletter'
     belongs_to :area, :class_name => 'Newsletter::Area'
     belongs_to :element, :class_name => 'Newsletter::Element'
-    # has_many :fields, :through => :element, :class_name => 'Newsletter::Field'
+    has_many :fields, :through => :element, :class_name => 'Newsletter::Field'
     # FIX_ME uncomment has_many :field_values
     has_many :field_values, :class_name => 'Newsletter::FieldValue'
     # FIX_ME uncomment has_many :assets
