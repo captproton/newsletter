@@ -1,8 +1,8 @@
 class CreateNewsletterAssets < ActiveRecord::Migration[7.0]
   def change
     create_table :newsletter_assets do |t|
-      t.references :newsletter_field, null: false, foreign_key: true
-      t.references :newsletter_piece, null: false, foreign_key: true
+      t.references :field, null: false, foreign_key: {to_table: :newsletter_fields}
+      t.references :piece, null: false, foreign_key: {to_table: :newsletter_pieces}
       t.string :image
       t.string :content_type
       t.integer :size

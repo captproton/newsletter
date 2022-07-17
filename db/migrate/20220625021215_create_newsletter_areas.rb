@@ -3,7 +3,7 @@ class CreateNewsletterAreas < ActiveRecord::Migration[7.0]
     create_table :newsletter_areas do |t|
       t.string :name,       null: false
       t.string :description
-      t.references :newsletter_designs, null: false, foreign_key: true
+      t.references :design, null: false, foreign_key: {to_table: :newsletter_designs}
       t.integer :updated_by
       t.datetime :delelted_at
 
