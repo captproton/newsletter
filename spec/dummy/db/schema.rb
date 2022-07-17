@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_17_160527) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_06_212135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,10 +36,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_160527) do
     t.string "name", null: false
     t.string "description"
     t.bigint "design_id", null: false
+    t.bigint "updated_by_id", null: false
     t.datetime "delelted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["design_id"], name: "index_newsletter_areas_on_design_id"
+    t.index ["updated_by_id"], name: "index_newsletter_areas_on_updated_by_id"
   end
 
   create_table "newsletter_assets", force: :cascade do |t|
@@ -63,25 +65,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_160527) do
     t.string "name", null: false
     t.string "description"
     t.text "html_design"
-    t.integer "updated_by_id"
     t.text "stylesheet_text"
+    t.bigint "updated_by_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.text "html_text"
+    t.index ["updated_by_id"], name: "index_newsletter_designs_on_updated_by_id"
   end
 
   create_table "newsletter_elements", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
     t.text "html_design"
-    t.bigint "designs_id", null: false
-    t.integer "updated_by"
+    t.bigint "design_id", null: false
+    t.bigint "updated_by_id", null: false
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "updated_by_id", null: false
-    t.index ["designs_id"], name: "index_newsletter_elements_on_designs_id"
+    t.index ["design_id"], name: "index_newsletter_elements_on_design_id"
     t.index ["updated_by_id"], name: "index_newsletter_elements_on_updated_by_id"
   end
 
@@ -106,11 +108,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_160527) do
     t.boolean "is_required"
     t.string "description"
     t.string "type"
-    t.integer "updated_by", null: false
+    t.bigint "updated_by_id", null: false
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["element_id"], name: "index_newsletter_fields_on_element_id"
+    t.index ["updated_by_id"], name: "index_newsletter_fields_on_updated_by_id"
   end
 
   create_table "newsletter_newsletters", force: :cascade do |t|
@@ -158,13 +161,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_160527) do
   add_foreign_key "newsletter_area_elements", "newsletter_areas", column: "area_id"
   add_foreign_key "newsletter_area_elements", "newsletter_elements", column: "element_id"
   add_foreign_key "newsletter_areas", "newsletter_designs", column: "design_id"
+  add_foreign_key "newsletter_areas", "users", column: "updated_by_id"
   add_foreign_key "newsletter_assets", "newsletter_fields", column: "field_id"
   add_foreign_key "newsletter_assets", "newsletter_pieces", column: "piece_id"
-  add_foreign_key "newsletter_elements", "newsletter_designs", column: "designs_id"
+  add_foreign_key "newsletter_designs", "users", column: "updated_by_id"
+  add_foreign_key "newsletter_elements", "newsletter_designs", column: "design_id"
   add_foreign_key "newsletter_elements", "users", column: "updated_by_id"
   add_foreign_key "newsletter_field_values", "newsletter_fields", column: "field_id"
   add_foreign_key "newsletter_field_values", "newsletter_pieces", column: "piece_id"
   add_foreign_key "newsletter_fields", "newsletter_elements", column: "element_id"
+  add_foreign_key "newsletter_fields", "users", column: "updated_by_id"
   add_foreign_key "newsletter_newsletters", "newsletter_designs", column: "design_id"
   add_foreign_key "newsletter_newsletters", "users", column: "updated_by_id"
   add_foreign_key "newsletter_pieces", "newsletter_areas", column: "area_id"
