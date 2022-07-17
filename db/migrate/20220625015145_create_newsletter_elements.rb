@@ -4,8 +4,8 @@ class CreateNewsletterElements < ActiveRecord::Migration[7.0]
       t.string :name, :null => false
       t.string :description
       t.text :html_design
-      t.references :designs, null: false, foreign_key: {to_table: :newsletter_designs}
-      t.integer :updated_by
+      t.references :design, null: false, foreign_key: {to_table: :newsletter_designs}
+      t.references :updated_by, null: false, foreign_key: {to_table: :users}
       t.datetime :deleted_at
 
       t.timestamps

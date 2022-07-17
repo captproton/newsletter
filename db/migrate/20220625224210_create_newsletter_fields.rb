@@ -8,7 +8,7 @@ class CreateNewsletterFields < ActiveRecord::Migration[7.0]
       t.boolean :is_required
       t.string :description
       t.string :type
-      t.integer :updated_by, null: false, foreign_key: {to_table: :users}
+      t.references :updated_by, null: false, foreign_key: {to_table: :users}
       t.datetime :deleted_at
 
       t.timestamps

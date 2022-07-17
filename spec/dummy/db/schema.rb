@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_17_160528) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_17_160527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -39,9 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_160528) do
     t.datetime "delelted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "updated_by_id", null: false
     t.index ["design_id"], name: "index_newsletter_areas_on_design_id"
-    t.index ["updated_by_id"], name: "index_newsletter_areas_on_updated_by_id"
   end
 
   create_table "newsletter_assets", force: :cascade do |t|
@@ -160,7 +158,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_17_160528) do
   add_foreign_key "newsletter_area_elements", "newsletter_areas", column: "area_id"
   add_foreign_key "newsletter_area_elements", "newsletter_elements", column: "element_id"
   add_foreign_key "newsletter_areas", "newsletter_designs", column: "design_id"
-  add_foreign_key "newsletter_areas", "users", column: "updated_by_id"
   add_foreign_key "newsletter_assets", "newsletter_fields", column: "field_id"
   add_foreign_key "newsletter_assets", "newsletter_pieces", column: "piece_id"
   add_foreign_key "newsletter_elements", "newsletter_designs", column: "designs_id"

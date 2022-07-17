@@ -61,6 +61,7 @@ module Newsletter
           :description => data[:description]
         )
         field.element = element
+        field.updated_by = updater
         field.save
       end
 

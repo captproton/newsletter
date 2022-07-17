@@ -4,8 +4,8 @@ class CreateNewsletterDesigns < ActiveRecord::Migration[7.0]
       t.string :name,            :null => false
       t.string :description
       t.text :html_design
-      t.integer :updated_by
       t.text :stysheet_text
+      t.references  :updated_by,  null: false, foreign_key: {to_table: :users}
 
       t.timestamps
     end
