@@ -2,16 +2,14 @@ require 'rails_helper'
 
 module Newsletter
   RSpec.describe Newsletter, type: :model do
-    pending "add some examples to (or delete) #{__FILE__}"
-
     include Capybara::DSL
     before(:each) do
       # company_name ||=  FFaker::Company.name
       design_name  =    "My Design"
       
-      gem_root = File.expand_path(File.join(File.dirname(__FILE__),'..','..'))
-      file ||= File.join(gem_root,'..','designs','exports','example-export.yaml')
-      @design = Design.import(file,design_name, FactoryBot.build(:user))
+      filename ||= File.join(Engine.plugin_root_path,'designs','exports','example-export.yaml')
+
+      @design = Design.import(filename,design_name, FactoryBot.build(:user))
       @newsletter = FactoryBot.create(:newsletter, design: @design, updated_by: FactoryBot.build(:user))
       @newsletter = Newsletter.find(@newsletter.id)
     end
