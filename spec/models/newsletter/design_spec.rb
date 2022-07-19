@@ -5,14 +5,12 @@ module Newsletter
     # pending "add some examples to (or delete) #{__FILE__}"
     before(:each) do 
       FileUtils.rm_rf(File.join(Rails.root, 'public', 'images', 'My_Design'))
-      gem_root = File.expand_path(File.join(File.dirname(__FILE__),'..','..'))
-
       design_name  =    "My Design"
-      file ||= File.join(gem_root,'..','designs','exports','example-export.yaml')
+      filename ||= File.join(Engine.plugin_root_path,'designs','exports','example-export.yaml')
       # p "********************************"
       # p "file: #{file}"
       # p "********************************"
-      @design = Design.import(file,design_name, FactoryBot.build(:user))
+      @design = Design.import(filename,design_name, FactoryBot.build(:user))
       @design.update_attribute(:stylesheet_text, ".blah{background-color: red}")
     end
 
@@ -27,7 +25,7 @@ module Newsletter
     end
 
     context "when name changed/moved" do
-      # pending "waiting on image processor"
+      pending "waiting on image processor"
 ### this context is messed up rigth now with original_design and fresh_design
       let(:original_design) do
         original_design = @design
@@ -65,7 +63,7 @@ module Newsletter
       end
             
       it "moves its images" do
-        ## this is OK for now, and it will be irrelevant once switched to active_storage
+        pending "this is OK for now, and it will be irrelevant once switched to active_storage"
         old_images_path = @design.images_path
         old_name = @design.name
         expect(@design.images_path).to include("public/images/#{@design.name_as_path(@design.name)}")

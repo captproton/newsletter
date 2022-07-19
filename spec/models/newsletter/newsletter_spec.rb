@@ -2,16 +2,16 @@ require 'rails_helper'
 
 module Newsletter
   RSpec.describe Newsletter, type: :model do
-    pending "add some examples to (or delete) #{__FILE__}"
-
     include Capybara::DSL
     before(:each) do
       # company_name ||=  FFaker::Company.name
       design_name  =    "My Design"
-      file ||= File.join(gem_root,'..','designs','exports','example-export.yaml')
+      
+      filename ||= File.join(Engine.plugin_root_path,'designs','exports','example-export.yaml')
+
       @design = Design.import(filename,design_name, FactoryBot.build(:user))
       @newsletter = FactoryBot.create(:newsletter, design: @design, updated_by: FactoryBot.build(:user))
-      @newsletter = Newsletter::Newsletter.find(@newsletter.id)
+      @newsletter = Newsletter.find(@newsletter.id)
     end
 
     # we need a real web server running ... easy way to do it js: true
@@ -19,7 +19,7 @@ module Newsletter
       before(:each) do
         visit "/newsletters/#{@newsletter.id}/public" 
       end
-      pending it "contains its pieces" do
+      it "contains its pieces" do
         @newsletter.pieces.each do |piece|
           piece.fields.each do |field|
             expect(@newsletter.generate(:email)).to include(field.get_value(piece)) 
@@ -27,15 +27,15 @@ module Newsletter
         end
       end
 
-      pending it "doesn't contain javascript" do
+      it "doesn't contain javascript" do
         expect(@newsletter.generate(:email)).not_to include('<script>')
       end
 
-      pending it "contains its stylesheet" do
+      it "contains its stylesheet" do
         expect(@newsletter.generate(:email)).to match %r|<style>\s+#{@design.stylesheet_text}\s+</style>|
       end
 
-      pending it "can generate an email_html" do
+      it "can generate an email_html" do
         email_html = @newsletter.email_html
         expect(email_html.strip).not_to eq ''
         expect(email_html).to eq @newsletter.generate('email') 
@@ -88,9 +88,9 @@ module Newsletter
         expect(@newsletter.published_at.to_i).to be_within(5).of Time.now.to_i
       end
       pending it "has a scope that returns published newsletters" do
-        expect(Newsletter::Newsletter.published.count).to eq 0
+        expect(Newsletter.published.count).to eq 0
         @newsletter.publish
-        expect(Newsletter::Newsletter.published.count).to eq 1
+        expect(Newsletter.published.count).to eq 1
       end
       pending it "clears published_at when 'unpublish' called" do
         @newsletter.publish
