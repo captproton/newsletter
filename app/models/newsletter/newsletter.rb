@@ -10,6 +10,8 @@ Newsletter also registers itself to be Mailable through the List Manager of Mail
 
 module Newsletter
   class Newsletter < ApplicationRecord
+    require 'open-uri'
+    require 'net/http'
     Rails.logger.info "Loading Newsletter Object"
     belongs_to :design, class_name: 'Newsletter::Design', foreign_key: 'design_id', required: true
 
